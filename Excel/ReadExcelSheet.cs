@@ -5,35 +5,30 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConfigTools
+namespace ConfigTools.Excel
 {
     /// <summary>
     /// 读取sheet
     /// </summary>
-    internal class ReadExcelSheet
+    internal class ReadExcelSheet : SheetData
     {
         //参数名
-        public List<String> paramNameList;
+        public List<string> paramNameList;
         //参数类型
-        String[] paramTypes;
+        string[] paramTypes;
         //参数注释
-        String[] paramSummarys;
+        string[] paramSummarys;
         //翻译标记：1=>翻译
-        String[] languageSigns;
+        string[] languageSigns;
         //是否导出标记：0|""全部导出
-        String[] buildSigns;
-        //数据
-        string[][] datas;
-        ExcelWorksheet sheet;
-        public ReadExcelSheet(ExcelWorksheet _sheet)
+        string[] buildSigns;
+        public ReadExcelSheet(ExcelWorksheet _sheet) : base(_sheet)
         {
-            sheet = _sheet;
             //行
-            int rowCount = sheet.Rows.Count();
-            int dataCount = rowCount - 5;
-            MainWindow.instance.AddLog($"行数量:{rowCount}，实际数据行为:{dataCount}");
+            this.rowCount = sheet.Rows.Count();
+            rowStartIndex = 5;
             //列数
-            int columnCount = sheet.Cells.Count() / rowCount;
+            columnCount = sheet.Cells.Count() / rowCount;
             //name行
             paramNameList = new();
             for (int i = 1; i <= columnCount; i++)
@@ -59,20 +54,11 @@ namespace ConfigTools
             SetValue(out buildSigns, 5, columnCount);
 
             //数据
-            datas = new string[dataCount][];
-            for (int i = 0; i < dataCount; i++)
-            {
-                datas[i] = new string[columnCount];
-                for (int j = 0; j < columnCount; j++)
-                {
-                    datas[i][j] = sheet.Cells[i + 5 + 1, j + 1].Text;
-                }
-            }
+            SetDatas();
             Debug.Log(Debug.Type.Log, "保存数据完毕");
         }
         void SetValue(out string[] strings, int rowIndex, int columnCount)
         {
-
             strings = new string[columnCount];
             for (int i = 1; i <= columnCount; i++)
             {

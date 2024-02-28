@@ -22,6 +22,16 @@ namespace ConfigTools
             public string enumValueName;
             public int? enumValue;
         }
+        //所有的枚举词典
+        /*
+         * enums=>
+         * key:枚举名称
+         * value:枚举内数据
+         * 
+         * value=>
+         * key2:枚举值名称
+         * value:枚举信息（枚举值名称、枚举值注释、枚举值对应的int）
+         */
         Dictionary<string, Dictionary<string, EnumValue>> enums;
         //枚举注释
         Dictionary<string, string> enumSummary;

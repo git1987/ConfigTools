@@ -394,29 +394,31 @@ namespace ConfigTools
             fs.Close();
             JsonData jd = new JsonData();
         }
-        static public void BuildCreateConfig()
-        {
-            WriteCSFile("CreateConfig.tem", scriptPath + "Editor/" + "CreateConfig.cs");
-        }
         static public void BuildConfigAssetsData()
         {
             WriteCSFile("ConfigAssetsData.tem", Config.writeScriptPath + "ConfigAssetsData.cs");
-        }
-        //CsvReader脚本
-        static public void BuildCsvReader()
-        {
-            WriteCSFile("CsvReader.tem", Config.writeScriptPath + "CsvReader.cs");
         }
         static public void BuildConfigAssetBase()
         {
             WriteCSFile("ConfigAssetBase.tem", Config.writeScriptPath + "ConfigAssetBase.cs");
         }
-        public static void CopyCSharpFile()
+        /// <summary>
+        /// 复制不需要修改的cs脚本
+        /// </summary>
+        /// <param name="folder">子文件夹名称</param>
+        public static void CopyCSharpFile(string folderPath)
         {
             DirectoryInfo folder = new DirectoryInfo(Config.readTemplatePath);
             foreach (FileInfo file in folder.GetFiles("*.cs"))
             {
-                file.CopyTo(Config.writeScriptPath + file.Name, true);
+                file.CopyTo(scriptPath + file.Name, true);
+            }
+            Directory.CreateDirectory($"{scriptPath}/Editor");
+            foreach (FileInfo file in folder.GetFiles("*.cseditor"))
+            {
+                string fileName = file.Name;
+                fileName = fileName.Substring(0, fileName.Length - "editor".Length);
+                file.CopyTo($"{scriptPath}/Editor/{fileName}", true);
             }
         }
         public static void CopyCSharpTemFile()
@@ -479,10 +481,6 @@ namespace ConfigTools
                 }
             }
             //保存
-            if (!Directory.Exists(scriptPath + "Editor/"))
-            {
-                Directory.CreateDirectory(scriptPath + "Editor/");
-            }
             FileStream fs = new FileStream(csFilePath.IndexOf(".cs") >= 0 ? csFilePath : csFilePath + ".cs", FileMode.Create);
             StreamWriter sw = new StreamWriter(fs);
             sw.Write(template.ToString());

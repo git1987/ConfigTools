@@ -1,26 +1,23 @@
-using System;
-using System.Diagnostics;
 using System.Text;
-using ConfigTools.ScriptableObject;
 using ConfigTools.UI;
-using Microsoft.VisualBasic.Logging;
+using ConfigTools.ScriptableObject;
 using Timers = System.Windows.Forms.Timer;
 namespace ConfigTools
 {
     public partial class MainWindow : Form
     {
         public static MainWindow instance;
-        StringBuilder logSB = new("日志：\n");
+        StringBuilder logSB = new();
         BuildProgress progress;
-        public ConfigEnum configEnum;
         public MainWindow()
         {
             instance = this;
             InitializeComponent();
+            ClearLog_Click(null, null);
             LogPanel.AutoScroll = true;
             LogPanel.Controls.Add(LogLabel);
             progress = new BuildProgress(BuildProgressBar);
-            //初始化配置文件
+            //
             Config.Init();
             ExcelPath.Text = Config.readExcelPath;
             OutputPath.Text = Config.unityPath;
@@ -35,7 +32,7 @@ namespace ConfigTools
             };
             timer.Start();
         }
-        //excel路径
+        //excel path
         private void ExcelPath_TextChanged(object sender, EventArgs e)
         {
             BinaryButton.Enabled =
@@ -48,10 +45,10 @@ namespace ConfigTools
             }
             else
             {
-                ExcelPathError.Text = "路径错误";
+                ExcelPathError.Text = "Excel Path Error!";
             }
         }
-        //选择excel路径按钮
+        //select excel path
         private void SelectExcelPath_Click(object sender, EventArgs e)
         {
             using (FolderBrowserDialog open = new FolderBrowserDialog())
@@ -65,7 +62,7 @@ namespace ConfigTools
                 }
             }
         }
-        //配置路径
+        //output path
         private void OutputPath_TextChanged(object sender, EventArgs e)
         {
             BinaryButton.Enabled =
@@ -78,10 +75,10 @@ namespace ConfigTools
             }
             else
             {
-                OutputPathError.Text = "路径错误";
+                OutputPathError.Text = "Output Path Error!";
             }
         }
-        //导出配置路径按钮
+        //select output path
         private void OutputButton_Click(object sender, EventArgs e)
         {
             using (FolderBrowserDialog open = new FolderBrowserDialog())
@@ -109,23 +106,21 @@ namespace ConfigTools
 
         private void ScriptableObjectButton_Click(object sender, EventArgs e)
         {
-            configEnum = new();
-            AddLog($"输出ScriptableObject,是否翻译：{UseLanguage.Checked}");
+            AddLog($"build ScriptableObject, is Language��{UseLanguage.Checked}");
             ScriptableObjectType type = new ScriptableObjectType();
             type.ReadExcels(ExcelPath.Text, UseLanguage.Checked);
         }
 
         private void BinaryButton_Click(object sender, EventArgs e)
         {
-            configEnum = new();
-            AddLog("输出二进制");
+            AddLog("build Binary");
 
         }
 
         private void ClearLog_Click(object sender, EventArgs e)
         {
             logSB.Clear();
-            AddLog("日志：");
+            AddLog("Log:");
         }
 
     }

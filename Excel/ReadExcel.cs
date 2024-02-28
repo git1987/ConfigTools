@@ -1,19 +1,18 @@
 ﻿using OfficeOpenXml;
-using System;
-using System.IO;
 
-namespace ConfigTools
+namespace ConfigTools.Excel
 {
     internal class ReadExcel
     {
-        public ReadExcel(string excelPath)
+        public List<ReadExcelSheet> sheetDataList = new();
+        public ReadExcel(string excelPath, ConfigEnum configEnum)
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             ExcelPackage package = new(excelPath);
             ExcelWorksheets sheets = package.Workbook.Worksheets;
             foreach (ExcelWorksheet sheet in sheets)
             {
-                MainWindow.instance.AddLog($"{package.File.Name}=>{sheet.Name}");
+                Debug.Log(Debug.Type.Log, $"{package.File.Name}=>{sheet.Name}");
                 string sheetName = sheet.Name.ToLower();
                 //忽略的sheet
                 if (sheetName.IndexOf("log") > -1 ||
@@ -22,18 +21,18 @@ namespace ConfigTools
                 //枚举
                 if (sheet.Name == "enum")
                 {
-
+                    EnumSheet(configEnum, sheet);
                 }
                 else
                 {
                     ReadExcelSheet excelSheet = new ReadExcelSheet(sheet);
-                    break;
+                    sheetDataList.Add(excelSheet);
                 }
             }
         }
-        void EnumSheet(ExcelWorksheet enumSheet)
+        void EnumSheet(ConfigEnum configEnum, ExcelWorksheet enumSheet)
         {
-
+            ReadExcelSheet_Enum readExcel = new ReadExcelSheet_Enum(enumSheet);
         }
     }
 }

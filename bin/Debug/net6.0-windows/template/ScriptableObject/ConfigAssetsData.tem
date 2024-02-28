@@ -8,9 +8,7 @@ public class ConfigAssetsData : MonoBehaviour
     static public ConfigAssetsData instance
     { get { return configAssetsDate; } }
     static public Enum_LanguageType languageType = 0;
-
     AssetBundle ab = null;
-    public bool initFinish { private set; get; }
     private void Awake()
     {
         if (configAssetsDate == null) configAssetsDate = this;
@@ -26,6 +24,11 @@ public class ConfigAssetsData : MonoBehaviour
     {
         ab?.Unload(true);
     }
+    public void SetAssetBundle(AssetBundle configAB)
+    {
+        if (configAB == null)
+            ab = configAB;
+    }
     public void Init()
     {
 
@@ -38,7 +41,7 @@ public class ConfigAssetsData : MonoBehaviour
 #elif UNITY_WEBGL
         string streamingFilePath = Application.streamingAssetsPath +"/Config/WebGL/config_webgl";
 #else
-        string streamingFilePath = Application.streamingAssetsPath +"/Config/Other/config_other";
+        string streamingFilePath = Application.streamingAssetsPath + "/Config/Other/config_other";
 #endif
 #if !UNITY_EDITOR
         ab = AssetBundle.LoadFromFile(streamingFilePath);

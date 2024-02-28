@@ -8,9 +8,7 @@ public class ConfigAssetsData : MonoBehaviour
     static public ConfigAssetsData instance
     { get { return configAssetsDate; } }
     static public Enum_LanguageType languageType = 0;
-
     AssetBundle ab = null;
-    public bool initFinish { private set; get; }
     private void Awake()
     {
         if (configAssetsDate == null) configAssetsDate = this;
@@ -20,46 +18,44 @@ public class ConfigAssetsData : MonoBehaviour
             Destroy(this.gameObject);
             return;
         }
-        Init();
     }
     private void OnDestroy()
     {
         ab?.Unload(true);
     }
-    public void Init()
+    public void Init(AssetBundle configAB)
     {
-
-#if UNITY_ANDROID
-        string streamingFilePath = Application.streamingAssetsPath +"/Config/Android/config_android";
-#elif UNITY_IOS
-        string streamingFilePath = Application.streamingAssetsPath +"/Config/IOS/config_ios";
-#elif UNITY_STANDALONE_WIN
-        string streamingFilePath = Application.streamingAssetsPath +"/Config/Windows/config_windows";
-#elif UNITY_WEBGL
-        string streamingFilePath = Application.streamingAssetsPath +"/Config/WebGL/config_webgl";
-#else
-        string streamingFilePath = Application.streamingAssetsPath +"/Config/Other/config_other";
-#endif
-#if !UNITY_EDITOR
-        ab = AssetBundle.LoadFromFile(streamingFilePath);
-#endif
+        if (configAB != null) return;
+        ab = configAB;
 #if !List
         _#{className}ConfigAsset = GetConfigAsset<#{ClassName}ConfigAsset, #{ClassName}ConfigAsset.#{ClassName}Config>();
 #endif
-        initFinish = true;
-#if !UNITY_EDITOR
-        ab.Unload(false);
-#endif
     }
-    T GetConfigAsset<T, V>() where T : ConfigAssetBase
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="T">配置容器类</typeparam>
+    /// <typeparam name="V">配置类</typeparam>
+    /// <returns></returns>
+    T GetConfigAsset<T, V>() where T : ConfigAssetBase  where V : ConfigAssetBase.ConfigAsset
     {
 #if UNITY_EDITOR
-        T asset = UnityEditor.AssetDatabase.LoadAssetAtPath<T>(string.Format("Assets/Res/ConfigAsset/{0}.asset", typeof(V).Name));
+        string filePath = $"Assets/ConfigAsset/{typeof(V).Name}.bytes";
+        TextAsset asset = ab.LoadAsset<TextAsset>(filePath);
 #else
-        T asset = ab.LoadAsset<T>(typeof(V).Name);
+        TextAsset asset = ab.LoadAsset<TextAsset>(typeof(V).Name);
 #endif
-        if (asset != null) asset.ReadList();
-        return asset;
+        T config = new T();
+        if (config != null)
+        {
+            config.ReadFromBytes(asset.bytes);
+            config.ReadList();
+        }
+        else
+        {
+            Debug.LogError($"{typeof(T).Name}创建失败");
+        }
+        return config;
     }
     public string GetLanguageText(string languageKey)
     {
@@ -83,7 +79,9 @@ public class ConfigAssetsData : MonoBehaviour
         get
         {
             if (_#{className}ConfigAsset == null)
-                Debug.LogError("没有初始化#{ClassName} AssetBundle");
+            {
+                _#{className}ConfigAsset = GetConfigAsset<#{ClassName}ConfigAsset, #{ClassName}ConfigAsset.#{ClassName}Config>();
+            }
             return _#{className}ConfigAsset;
         }
     }

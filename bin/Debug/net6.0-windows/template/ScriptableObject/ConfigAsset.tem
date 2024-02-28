@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using LitJson;
 /// <summary>
-/// Json数据类型的类
+/// ScriptableObject数据类型的类
 /// </summary>
 public class #{ClassName}ConfigAsset : ConfigAssetBase
 {

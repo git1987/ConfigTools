@@ -1,4 +1,5 @@
-﻿using Excel;
+﻿using ConfigTools.Excel;
+using Excel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,37 +9,15 @@ using System.Threading.Tasks;
 namespace ConfigTools.ScriptableObject
 {
     /// <summary>
-    /// unity ScriptableObject类型
+    /// unity ScriptableObject
     /// </summary>
     internal class ScriptableObjectType : ObjectType
     {
-        public override void ReadExcels(string folder, bool useLanguage)
+        string templateFile = "template/ScriptableObject";
+        public override void BuildCSharpFile(ReadExcelSheet sheet)
         {
-            List<List<string>> classNameList = new List<List<string>>();
-            DirectoryInfo dir = new DirectoryInfo(Config.readExcelPath);
-            Dictionary<string, string> languageDatas = null;
-            if (useLanguage)
-                languageDatas = new Dictionary<string, string>();
-            foreach (FileInfo file in dir.GetFiles("*.xlsx"))
-            {
-                //排除excel缓存文件
-                if (file.Name.IndexOf("$") == -1)
-                {
-                    ReadExcel read = new ReadExcel(file.FullName);
-                    //classNameList.Add(ReadExcel(file.FullName, languageDatas));
-                    //if (file.Name.ToLower().IndexOf("enum") > -1)
-                    //{
-                    //    ReadEnumExcel(file.FullName);
-                    //}
-                    //else
-                    //{
-                    //}
-                }
-            }
-            //导出每个表中的enum  sheet
-            configEnum.Save(Config.appPath + "excel/Config_Enum.cs");
-        }
 
+        }
         List<string> ReadExcel(string excelPath, Dictionary<string, string> languageDatas)
         {
             Test test = new();

@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// #{ClassSummary}
+/// </summary>
 public class #{ClassName}ConfigAsset : ConfigAssetBase
 {
     [System.Serializable]
@@ -10,47 +12,37 @@ public class #{ClassName}ConfigAsset : ConfigAssetBase
 #if List
         #{typeName} #{variableName};
 #endif
-        public string GetLanguageText(Enum_LanguageType type)
-        {
-            switch (type)
-            {
-                case Enum_LanguageType.Base:
-#if List
-                case Enum_LanguageType.#{variableName}:
-                    return #{variableName};
-#endif
-                default:
-                    UnityEngine.Debug.LogError(type.ToString() + " is null===>" + key);
-                    return key;
-            }
         }
     }
     public List<#{ClassName}Config> configList;
-    public Dictionary<string, #{ClassName}Config> configs;
-    
+    public Dictionary<int, #{ClassName}Config> configs;
     public override string GetConfigName()
     {
         return "#{ClassName}Config";
     }
-    public string GetLanguageText(string key)
+    public #{ClassName}Config GetConfigByID(int configID)
     {
-        if (configs.TryGetValue(key, out #{ClassName}Config config))
-            return config.GetLanguageText(ConfigAssetData.languageType);
+        if (configs.TryGetValue(configID, out #{ClassName}Config config))
+        {
+            return config;
+        }
         else
         {
-            return key;
-        }
+            Debug.LogError($"{ID}:config is null!");
+            return null;
+        } 
     }
-    protected override void ReadList()
+    public override void ReadList()
     {
-        configs = new Dictionary<string, #{ClassName}Config>();
+        configs = new Dictionary<int, #{ClassName}Config>();
         for (int i = 0; i < configList.Count; i++)
         {
-            if (!configs.ContainsKey(configList[i].key))
-                configs.Add(configList[i].key, configList[i]);
+            if (!configs.ContainsKey(configList[i].ID))
+                configs.Add(configList[i].ID, configList[i]);
         }
     }
-    public override void ReadFromData(object obj)
+
+    public override void ReadFromData(byte[] bytes)
     {
         MemoryStream stream = new(bytes);
         BinaryReader reader = new BinaryReader(stream);
@@ -66,4 +58,5 @@ public class #{ClassName}ConfigAsset : ConfigAssetBase
         }
         ReadList();
     }
+
 }

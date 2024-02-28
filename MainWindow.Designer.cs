@@ -215,6 +215,7 @@
             this.BuildSign.Size = new System.Drawing.Size(32, 25);
             this.BuildSign.TabIndex = 14;
             this.BuildSign.Text = "0";
+            this.BuildSign.SelectedIndexChanged += new System.EventHandler(this.BuildSign_SelectedIndexChanged);
             // 
             // MainWindow
             // 

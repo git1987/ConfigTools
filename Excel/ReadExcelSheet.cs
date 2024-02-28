@@ -12,58 +12,54 @@ namespace ConfigTools.Excel
     /// </summary>
     internal class ReadExcelSheet : SheetData
     {
-        //参数名
-        public List<string> paramNameList;
-        //参数类型
-        string[] paramTypes;
-        //参数注释
-        string[] paramSummarys;
+        //变量名
+        public List<string> variableNameList;
+        //变量类型
+        public List<string> variableTypeList;
+        //注释
+        public List<string> summarylist;
         //翻译标记：1=>翻译
-        string[] languageSigns;
+        public List<string> languageList;
         //是否导出标记：0|""全部导出
-        string[] buildSigns;
+        public List<string> buildSignList;
         public ReadExcelSheet(ExcelWorksheet _sheet) : base(_sheet)
         {
-            //行
-            this.rowCount = sheet.Rows.Count();
             rowStartIndex = 5;
-            //列数
-            columnCount = sheet.Cells.Count() / rowCount;
             //name行
-            paramNameList = new();
+            variableNameList = new();
             for (int i = 1; i <= columnCount; i++)
             {
                 string name = sheet.Cells[1, i].Text;
                 if (name is { Length: > 0 })
                 {
-                    paramNameList.Add(name);
+                    variableNameList.Add(name);
                 }
                 else
                 {
-                    Debug.Log(Debug.Type.Error, $"{sheet.Name}=>{paramNameList[paramNameList.Count - 1]}后，有空的变量名");
-                    columnCount = paramNameList.Count;
+                    Debug.Log(Debug.Type.Error, $"{sheet.Name}=>{variableNameList[variableNameList.Count - 1]}后，有空的变量名");
+                    columnCount = variableNameList.Count;
                 }
             }
             //参数类型
-            SetValue(out paramTypes, 2, columnCount);
+            SetValue(out variableTypeList, 2, columnCount);
             //参数注释
-            SetValue(out paramSummarys, 3, columnCount);
+            SetValue(out summarylist, 3, columnCount);
             //翻译标记：1=>翻译
-            SetValue(out languageSigns, 4, columnCount);
+            SetValue(out languageList, 4, columnCount);
             //是否导出标记：0|""全部导出
-            SetValue(out buildSigns, 5, columnCount);
+            SetValue(out buildSignList, 5, columnCount);
 
             //数据
             SetDatas();
             Debug.Log(Debug.Type.Log, "保存数据完毕");
         }
-        void SetValue(out string[] strings, int rowIndex, int columnCount)
+        void SetValue(out List<string> contentList, int rowIndex, int columnCount)
         {
-            strings = new string[columnCount];
+            contentList = new(columnCount);
             for (int i = 1; i <= columnCount; i++)
             {
                 string value = sheet.Cells[rowIndex, i].Text;
-                strings[i - 1] = value;
+                contentList.Add(value);
             }
         }
     }

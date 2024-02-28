@@ -1,6 +1,6 @@
 {
   "excel": "E:/Git/ConfigTools/bin/Debug/net6.0-windows/excel",
-  "unitypath": "E:/Git/ConfigTools/bin/Debug/game/Assets",
+  "unitypath": "E:/Git/ConfigTools/bin/Debug/game/Assets/",
   "outputDataPath": "E:/Git/ConfigTools/bin/Debug/game/Assets/ConfigAsset",
-  "outputType": "导出类型：【0:全部导出】【1:客户端】【2:服务器】"
+  "outputType": "0"
 }

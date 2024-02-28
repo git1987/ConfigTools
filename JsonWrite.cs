@@ -6,10 +6,12 @@ namespace ConfigTools
     internal class JsonWrite : DataWrite
     {
         public JsonData jsonData;
+        protected StreamWriter writer;
         public JsonWrite(string fileName)
         {
             string jsonPath = Config.writeDataPath + "ConfigAssetJson/";
             Init(jsonPath, fileName + "Config.json");
+            writer = new(fileStream, System.Text.Encoding.UTF8);
             jsonData = new JsonData();
             jsonData["name"] = fileName + "Config";
         }
@@ -41,7 +43,7 @@ namespace ConfigTools
 
         public override void Save()
         {
-            sw.Write(Tool.JsonFormat(jsonData));
+            writer.Write(Tool.JsonFormat(jsonData));
             base.Save();
         }
 

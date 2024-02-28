@@ -1,16 +1,10 @@
 ﻿using ConfigTools.Excel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ConfigTools
 {
     internal abstract class ObjectType
     {
         protected ConfigEnum configEnum = new();
-        protected ScriptWrite scriptWrite;
         public virtual void ReadExcels(string folder, bool useLanguage)
         {
             DirectoryInfo dir = new DirectoryInfo(Config.readExcelPath);
@@ -25,22 +19,15 @@ namespace ConfigTools
                     ReadExcel read = new ReadExcel(file.FullName, configEnum);
                     for (int i = 0; i < read.sheetDataList.Count; i++)
                     {
-                        BuildCSharpFile(read.sheetDataList[i]);
+                        BuildCSharpFile(read.sheetDataList[i],useLanguage);
                     }
                 }
             }
             //导出每个表中的enum  sheet
             configEnum.Save($"{Config.appPath}excel/Config_Enum.cs");
-            ScriptWrite.CopyCSharpFile();
+            ScriptWrite.CopyCSharpFile(GetType().Name);
         }
-        public abstract void BuildCSharpFile(ReadExcelSheet sheet);
-        /// <summary>
-        /// 复制单例类和Editor类
-        /// </summary>
-        public virtual void CopyCSharp()
-        {
-
-        }
-
+        public abstract void BuildCSharpFile(ReadExcelSheet sheet, bool isLanguage);
+        public abstract void BuildDataFile(ReadExcelSheet sheet);
     }
 }

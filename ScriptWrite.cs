@@ -25,7 +25,7 @@ namespace ConfigTools
             {
                 if (_languageScriptTemplate == string.Empty)
                 {
-                    StreamReader sr = new StreamReader(Config.readTemplatePath + "/LanguageConfigAsset.tem");
+                    StreamReader sr = new StreamReader(Config.templatePath + "/LanguageConfigAsset.tem");
                     _languageScriptTemplate = sr.ReadToEnd();
                 }
                 return _languageScriptTemplate;
@@ -38,7 +38,7 @@ namespace ConfigTools
             {
                 if (_jsonScriptTemplate == string.Empty)
                 {
-                    StreamReader sr = new StreamReader(Config.readTemplatePath + "/ConfigAssetJson.tem");
+                    StreamReader sr = new StreamReader(Config.templatePath + "/ConfigAssetJson.tem");
                     _jsonScriptTemplate = sr.ReadToEnd();
                 }
                 return _jsonScriptTemplate;
@@ -51,7 +51,7 @@ namespace ConfigTools
             {
                 if (_csvScriptTemplate == string.Empty)
                 {
-                    StreamReader sr = new StreamReader(Config.readTemplatePath + "/ConfigAssetCsv.tem");
+                    StreamReader sr = new StreamReader(Config.templatePath + "/ConfigAssetCsv.tem");
                     _csvScriptTemplate = sr.ReadToEnd();
                 }
                 return _csvScriptTemplate;
@@ -71,13 +71,14 @@ namespace ConfigTools
             output
         }
         StringBuilder scriptContent;
+        StreamWriter writer;
 
         string className;
         string fileName;
         //变量名称
         public List<string> variableNameList = new List<string>();
         //是否导出数据
-        public List<bool> isBuildList = new List<bool>();
+        public List<bool> buildSignList = new List<bool>();
         //备注
         public List<string> summarylist = new List<string>();
         //变量类型
@@ -86,18 +87,59 @@ namespace ConfigTools
         public List<bool> languageList = new List<bool>();
         //是否翻译配置
         bool isLanguage;
-
+        /// <summary>
+        /// 创建脚本的路径
+        /// </summary>
         static public string scriptPath
         {
             get { return Config.writeScriptPath + "ConfigAssetScript/"; }
         }
+
+        static public string outputScriptPath
+        {
+            get { return Config.outputDataPath + "ConfigAssetScript/"; }
+        }
         public ScriptWrite(string _fileName, bool _isLanguage)
         {
             Init(scriptPath, _fileName + "ConfigAsset.cs");
+            writer = new(fileStream, Encoding.UTF8);
             this.fileName = _fileName;
             classNameList.Add(fileName);
             className = _fileName + "ConfigAsset";
             this.isLanguage = _isLanguage;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="nameList"></param>
+        /// <param name="typeList"></param>
+        /// <param name="summaryList"></param>
+        /// <param name="languageList"></param>
+        /// <param name="buildSignList"></param>
+        /// <param name=""></param>
+        public void InitClassInfo(List<string> nameList,
+            List<string> typeList,
+            List<string> summaryList,
+            List<string> languageList,
+            List<string> buildSignList)
+        {
+            variableNameList = nameList;
+            variableTypeList = typeList;
+            this.summarylist = summaryList;
+            this.languageList = new(languageList.Count);
+            for (int i = 0; i < languageList.Count; i++)
+            {
+                this.languageList.Add(languageList[i] == "1");
+            }
+            this.buildSignList = new(buildSignList.Count);
+            for (int i = 0; i < buildSignList.Count; i++)
+            {
+                this.buildSignList.Add(
+                    buildSignList[i] == string.Empty ||
+                    buildSignList[i] == "0" ||
+                    buildSignList[i] == Config.outputType
+                    );
+            }
         }
         public void Append(int type, string content)
         {
@@ -120,7 +162,7 @@ namespace ConfigTools
                         languageList.Add(content == "1");
                     break;
                 case StringType.output:
-                    isBuildList.Add(content == string.Empty || content == "0" || content == Config.outputType);
+                    buildSignList.Add(content == string.Empty || content == "0" || content == Config.outputType);
                     break;
             }
         }
@@ -175,7 +217,7 @@ namespace ConfigTools
                     //第1列固定使用ID变量名，使用ID变量名
                     for (int k = 1; k < forCount; k++)
                     {
-                        if (isBuildList.Count > 0 && !isBuildList[k]) continue;
+                        if (buildSignList.Count > 0 && !buildSignList[k]) continue;
                         StringBuilder changeContent = new StringBuilder(newContent.ToString());
                         //变量名
                         if (changeContent.ToString().IndexOf("#{variableName}") >= 0)
@@ -388,10 +430,10 @@ namespace ConfigTools
                     break;
             }
             scriptContent.Replace("#{ClassName}", fileName);
-            sw.Write(scriptContent.ToString());
-            sw.Flush();
-            sw.Close();
-            fs.Close();
+            writer.Write(scriptContent.ToString());
+            writer.Flush();
+            writer.Close();
+            fileStream.Close();
             JsonData jd = new JsonData();
         }
         static public void BuildConfigAssetsData()
@@ -406,14 +448,16 @@ namespace ConfigTools
         /// 复制不需要修改的cs脚本
         /// </summary>
         /// <param name="folder">子文件夹名称</param>
-        public static void CopyCSharpFile(string folderPath)
+        public static void CopyCSharpFile(string sonFolder)
         {
-            DirectoryInfo folder = new DirectoryInfo(Config.readTemplatePath);
+            if (!Directory.Exists($"{scriptPath}/Editor"))
+                Directory.CreateDirectory($"{scriptPath}/Editor");
+            DirectoryInfo folder = new DirectoryInfo(Config.templatePath);
             foreach (FileInfo file in folder.GetFiles("*.cs"))
             {
                 file.CopyTo(scriptPath + file.Name, true);
             }
-            Directory.CreateDirectory($"{scriptPath}/Editor");
+            folder = new DirectoryInfo($"{Config.templatePath}{sonFolder}");
             foreach (FileInfo file in folder.GetFiles("*.cseditor"))
             {
                 string fileName = file.Name;
@@ -421,25 +465,14 @@ namespace ConfigTools
                 file.CopyTo($"{scriptPath}/Editor/{fileName}", true);
             }
         }
-        public static void CopyCSharpTemFile()
-        {
-            DirectoryInfo folder = new DirectoryInfo(Config.readTemplatePath);
-            foreach (FileInfo file in folder.GetFiles("*.cstem"))
-            {
-                if (file.Name.IndexOf("CreateConfig") > -1)
-                    WriteCSFile(file.Name, scriptPath + "Editor/" + file.Name.Split('.')[0] + ".cs");
-                else
-                    WriteCSFile(file.Name, scriptPath + file.Name.Split('.')[0] + ".cs");
-            }
-        }
         //生成完整的.cs脚本文件
         static private void WriteCSFile(string temFileName, string csFilePath)
         {
-            if (!File.Exists(Config.readTemplatePath + temFileName))
+            if (!File.Exists(Config.templatePath + temFileName))
             {
                 Console.WriteLine(".cstem文件不存在====>" + temFileName);
             }
-            StreamReader sr = new StreamReader(Config.readTemplatePath + temFileName);
+            StreamReader sr = new StreamReader(Config.templatePath + temFileName);
             StringBuilder template = new StringBuilder(sr.ReadToEnd());
             List<int> list = new List<int>();
             int temp = 0;

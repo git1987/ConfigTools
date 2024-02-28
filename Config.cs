@@ -22,15 +22,15 @@ namespace ConfigTools
                 return _appPath;
             }
         }
+        static public string configFile => appPath + "config.json";
         static public void Init()
         {
             ///路径配置文件
-            string filePath = appPath + "config.json";
-            Console.WriteLine("配置文件：" + filePath);
+            Console.WriteLine("配置文件：" + configFile);
             JsonData jd;
-            if (File.Exists(filePath))
+            if (File.Exists(configFile))
             {
-                StreamReader sr = new StreamReader(filePath);
+                StreamReader sr = new StreamReader(configFile);
                 StringBuilder sb = new StringBuilder(sr.ReadToEnd());
                 sb.Replace("\\", "/");
                 Console.WriteLine(sb.ToString());
@@ -64,8 +64,8 @@ namespace ConfigTools
                     jd["unitypath"] = $"unity工程路径";
                     jd["outputDataPath"] = "配置输出路径";
                 }
-                jd["outputType"] = "导出类型：【0:全部导出】【1:客户端】【2:服务器】";
-                FileStream fs = new FileStream(filePath, FileMode.Create);
+                jd["outputType"] = "0";
+                FileStream fs = new FileStream(configFile, FileMode.OpenOrCreate);
                 StreamWriter sw = new StreamWriter(fs);
                 sw.Write(Tool.JsonFormat(jd.ToJson()));
                 //清空缓冲区
@@ -89,14 +89,14 @@ namespace ConfigTools
                 Console.WriteLine("请选择Unity工程目录");
                 unityPath = string.Empty;
             }
-            readTemplatePath = $"{appPath}template/";
+            templatePath = $"{appPath}template/";
             writeScriptPath = $"{appPath}ConfigScript/";
             writeDataPath = $"{appPath}data/";
             outputDataPath = jd["outputDataPath"].ToString();
             if (((IDictionary)jd).Contains("outputType"))
-                outputType = jd["outputType"].ToString().ToInt().ToString();
+                _outputType = jd["outputType"].ToString().ToInt().ToString();
             else
-                outputType = null;
+                _outputType = null;
         }
         //刷新文件夹:删除旧的配置文件夹和脚本文件夹
         public static void RefreshFolder()
@@ -136,7 +136,7 @@ namespace ConfigTools
         /// <summary>
         /// 模板文件路径
         /// </summary>
-        internal static string readTemplatePath { private set; get; }
+        internal static string templatePath { private set; get; }
         /// <summary>
         /// 导出的配置脚本路径
         /// </summary>
@@ -155,6 +155,36 @@ namespace ConfigTools
         /// 1:客户端
         /// 2:服务器
         /// </summary>
-        internal static string outputType { private set; get; }
+        internal static string outputType
+        {
+            set
+            {
+                if (_outputType != value)
+                {
+                    _outputType = value;
+                    Modify();
+                }
+            }
+            get => _outputType;
+        }
+        private static string _outputType;
+
+        private static void Modify()
+        {
+            FileStream fs = new FileStream(configFile, FileMode.Create, FileAccess.Write);
+            JsonData jd = new JsonData();
+            jd["excel"] = readExcelPath;
+            jd["unitypath"] = unityPath;
+            jd["outputDataPath"] = outputDataPath;
+            jd["outputType"] = outputType;
+            StreamWriter writer = new StreamWriter(fs);
+            writer.Write(Tool.JsonFormat(jd.ToJson()));
+            //清空缓冲区
+            writer.Flush();
+            //关闭流
+            writer.Close();
+            //关闭文件
+            fs.Close();
+        }
     }
 }

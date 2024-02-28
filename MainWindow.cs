@@ -21,6 +21,7 @@ namespace ConfigTools
             Config.Init();
             ExcelPath.Text = Config.readExcelPath;
             OutputPath.Text = Config.unityPath;
+            BuildSign.Text = Config.outputType;
             //test
             Timers timer = new Timers() { Interval = 1 };
             int temp = 0;
@@ -106,15 +107,16 @@ namespace ConfigTools
 
         private void ScriptableObjectButton_Click(object sender, EventArgs e)
         {
-            AddLog($"build ScriptableObject, is Language£º{UseLanguage.Checked}");
-            ScriptableObjectType type = new ScriptableObjectType();
+            AddLog($"build ScriptableObject, is Language:{UseLanguage.Checked}");
+            ObjectType type = new ScriptableObject.ScriptableObject();
             type.ReadExcels(ExcelPath.Text, UseLanguage.Checked);
         }
 
         private void BinaryButton_Click(object sender, EventArgs e)
         {
             AddLog("build Binary");
-
+            ObjectType type = new Binary.Binary();
+            type.ReadExcels(ExcelPath.Text, UseLanguage.Checked);
         }
 
         private void ClearLog_Click(object sender, EventArgs e)
@@ -123,5 +125,9 @@ namespace ConfigTools
             AddLog("Log:");
         }
 
+        private void BuildSign_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Config.outputType = BuildSign.Text;
+        }
     }
 }

@@ -1,23 +1,22 @@
 ﻿using System.IO;
+using System.IO.Pipes;
 
 namespace ConfigTools
 {
     internal class DataWrite
     {
-        protected FileStream fs;
-        protected StreamWriter sw;
+        protected FileStream fileStream;
         protected void Init(string filePath, string fileName)
         {
             if (!Directory.Exists(filePath))
                 Directory.CreateDirectory(filePath);
-            fs = new FileStream(filePath + fileName, FileMode.Create);
-            sw = new StreamWriter(fs, System.Text.Encoding.UTF8);
+            fileStream = new FileStream(filePath + fileName, FileMode.OpenOrCreate, FileAccess.Write);
         }
         public virtual void Save()
         {
-            sw.Flush();
-            sw.Close();
-            fs.Close();
+            fileStream.Flush();
+            fileStream.Close();
+            fileStream = null;
         }
 
     }

@@ -16,11 +16,16 @@ namespace ConfigTools.Excel
         //数据行起点
         protected int rowStartIndex;
         //数据集合
-        protected string[][] datas;
+        public string[][] datas { private set; get; }
         protected ExcelWorksheet sheet;
+        public string sheetName => sheet.Name;
         public SheetData(ExcelWorksheet sheet)
         {
             this.sheet = sheet;
+            //行
+            rowCount = sheet.Rows.Count();
+            //列数
+            columnCount = sheet.Cells.Count() / rowCount;
         }
         /// <summary>
         /// 保存数据
@@ -30,10 +35,10 @@ namespace ConfigTools.Excel
             datas = new string[rowCount - rowStartIndex][];
             for (int i = rowStartIndex; i < rowCount; i++)
             {
-                datas[i] = new string[columnCount];
+                datas[i - rowStartIndex] = new string[columnCount];
                 for (int j = 0; j < columnCount; j++)
                 {
-                    datas[i][j] = sheet.Cells[i + 1, j + 1].Text;
+                    datas[i - rowStartIndex][j] = sheet.Cells[i + 1, j + 1].Text;
                 }
             }
         }

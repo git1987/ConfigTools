@@ -6,10 +6,12 @@ namespace ConfigTools
     internal class CsvWrite : DataWrite
     {
         StringBuilder config;
+        protected StreamWriter writer;
         public CsvWrite(string configName)
         {
             string csvPath = Config.writeDataPath + "ConfigAssetCsv/";
             Init(csvPath, configName + "Config.csv");
+            writer = new(fileStream, Encoding.UTF8);
             config = new StringBuilder();
         }
         public CsvWrite(string configName, string path)
@@ -25,7 +27,7 @@ namespace ConfigTools
         }
         public override void Save()
         {
-            sw.Write(config.ToString());
+            writer.Write(config.ToString());
             base.Save();
         }
     }

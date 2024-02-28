@@ -1,20 +1,20 @@
 ﻿using ConfigTools.Excel;
 using Excel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ConfigTools.ScriptableObject
 {
     /// <summary>
     /// unity ScriptableObject
     /// </summary>
-    internal class ScriptableObjectType : ObjectType
+    internal class ScriptableObject : ObjectType
     {
-        string templateFile = "template/ScriptableObject";
-        public override void BuildCSharpFile(ReadExcelSheet sheet)
+        public override void BuildCSharpFile(ReadExcelSheet sheet, bool isLanguage)
+        {
+            ScriptWrite scriptWrite = new ScriptWrite(sheet.sheetName, isLanguage);
+        
+        }
+        //保存为json
+        public override void BuildDataFile(ReadExcelSheet sheet)
         {
 
         }

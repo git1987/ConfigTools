@@ -18,58 +18,63 @@ public class ConfigAssetsData : MonoBehaviour
             Destroy(this.gameObject);
             return;
         }
+        Init();
     }
     private void OnDestroy()
     {
         ab?.Unload(true);
     }
-    public void Init(AssetBundle configAB)
+    public void SetAssetBundle(AssetBundle configAB)
     {
-        if (configAB != null) return;
-        ab = configAB;
+        if (configAB == null)
+            ab = configAB;
+    }
+    public void Init()
+    {
+
+#if UNITY_ANDROID
+        string streamingFilePath = Application.streamingAssetsPath +"/Config/Android/config_android";
+#elif UNITY_IOS
+        string streamingFilePath = Application.streamingAssetsPath +"/Config/IOS/config_ios";
+#elif UNITY_STANDALONE_WIN
+        string streamingFilePath = Application.streamingAssetsPath +"/Config/Windows/config_windows";
+#elif UNITY_WEBGL
+        string streamingFilePath = Application.streamingAssetsPath +"/Config/WebGL/config_webgl";
+#else
+        string streamingFilePath = Application.streamingAssetsPath + "/Config/Other/config_other";
+#endif
+#if !UNITY_EDITOR
+        ab = AssetBundle.LoadFromFile(streamingFilePath);
+#endif
         _languageConfigAsset = GetConfigAsset<LanguageConfigAsset, LanguageConfigAsset.LanguageConfig>();
         _languageDataConfigAsset = GetConfigAsset<LanguageDataConfigAsset, LanguageDataConfigAsset.LanguageDataConfig>();
 
+        initFinish = true;
+#if !UNITY_EDITOR
+        ab.Unload(false);
+#endif
     }
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <typeparam name="T">配置容器类</typeparam>
-    /// <typeparam name="V">配置类</typeparam>
-    /// <returns></returns>
-    T GetConfigAsset<T, V>() where T : ConfigAssetBase  where V : ConfigAssetBase.ConfigAsset
+    T GetConfigAsset<T, V>() where T : ConfigAssetBase
     {
 #if UNITY_EDITOR
-        string filePath = $"Assets/ConfigAssets/ConfigAssetBinary/{typeof(V).Name}.bytes";
-        TextAsset asset = AssetDatabase.LoadAssetAtPath<TextAsset>(filePath);
+        T asset = UnityEditor.AssetDatabase.LoadAssetAtPath<T>(string.Format("Assets/Res/ConfigAsset/{0}.asset", typeof(V).Name));
 #else
-        TextAsset asset = ab.LoadAsset<TextAsset>(typeof(V).Name);
+        T asset = ab.LoadAsset<T>(typeof(V).Name);
 #endif
-        T config = System.Activator.CreateInstance<T>();
-        if (config != null)
-        {
-            config.ReadFromBytes(asset.bytes);
-        }
-        else
-        {
-            Debug.LogError($"{typeof(T).Name}创建失败");
-        }
-        return config;
+        if (asset != null) asset.ReadList();
+        return asset;
     }
     public string GetLanguageText(string languageKey)
     {
         if (languageKey.IndexOf("language_") > -1)
         {
-            if (languageDataConfigAsset == null) 
-                Debug.LogError("LanguageData config is not init!");
+            if (languageDataConfigAsset == null) Debug.LogError("LanguageData config is not init!");
             else return languageDataConfigAsset.GetLanguageText(languageKey);
         }
         else
         {
-            if (languageConfigAsset == null) 
-                Debug.LogError("Language config is not init!");
-            else 
-                return languageConfigAsset.GetLanguageText(languageKey);
+            if (languageConfigAsset == null) Debug.LogError("Language config is not init!");
+            else return languageConfigAsset.GetLanguageText(languageKey);
         }
         Debug.LogError(languageKey + "is not in config!");
         return languageKey;
@@ -80,9 +85,7 @@ public class ConfigAssetsData : MonoBehaviour
         get
         {
             if (_languageConfigAsset == null)
-            {
-                _languageConfigAsset = GetConfigAsset<LanguageConfigAsset, LanguageConfigAsset.LanguageConfig>();
-            }
+                Debug.LogError("没有初始化Language AssetBundle");
             return _languageConfigAsset;
         }
     }
@@ -92,9 +95,7 @@ public class ConfigAssetsData : MonoBehaviour
         get
         {
             if (_languageDataConfigAsset == null)
-            {
-                _languageDataConfigAsset = GetConfigAsset<LanguageDataConfigAsset, LanguageDataConfigAsset.LanguageDataConfig>();
-            }
+                Debug.LogError("没有初始化LanguageData AssetBundle");
             return _languageDataConfigAsset;
         }
     }

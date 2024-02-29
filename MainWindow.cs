@@ -1,7 +1,8 @@
 using System.Text;
 using ConfigTools.UI;
-using ConfigTools.ScriptableObject;
+using ConfigTools.DataType;
 using Timers = System.Windows.Forms.Timer;
+
 namespace ConfigTools
 {
     public partial class MainWindow : Form
@@ -78,14 +79,14 @@ namespace ConfigTools
         private void ScriptableObjectButton_Click(object sender, EventArgs e)
         {
             AddLog($"build ScriptableObject, is Language:{UseLanguage.Checked}");
-            ObjectType type = new ScriptableObject.ScriptableObject();
+            ObjectType type = new ScriptableObject();
             type.ReadExcels(ExcelPath.Text);
         }
 
         private void BinaryButton_Click(object sender, EventArgs e)
         {
             AddLog("build Binary");
-            ObjectType type = new Binary.Binary();
+            ObjectType type = new Binary();
             type.ReadExcels(ExcelPath.Text);
         }
 

@@ -1,9 +1,10 @@
-﻿using System.IO;
+﻿using ConfigTools.Excel;
+using System.IO;
 using System.IO.Pipes;
 
 namespace ConfigTools
 {
-    internal class DataWrite
+    internal abstract class DataWrite
     {
         protected FileStream fileStream;
         protected void Init(string filePath, string fileName)
@@ -24,5 +25,6 @@ namespace ConfigTools
                 Debug.LogError("已经被释放掉了");
             }
         }
+        public abstract void SetData(ReadExcelSheet sheet);
     }
 }

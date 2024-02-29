@@ -1,10 +1,11 @@
 ﻿using ConfigTools.Excel;
 
-namespace ConfigTools
+namespace ConfigTools.DataType
 {
     internal abstract class ObjectType
     {
         public static ConfigEnum configEnum;
+        public virtual string Name => GetType().Name;
         public virtual void ReadExcels(string folder)
         {
             configEnum = new();
@@ -49,5 +50,12 @@ namespace ConfigTools
         }
         public abstract void BuildCSharpFile(ReadExcelSheet sheet);
         public abstract void BuildDataFile(ReadExcelSheet sheet);
+        /// <summary>
+        /// 生成变量赋值代码块
+        /// </summary>
+        /// <param name="variableType">变量类型</param>
+        /// <param name="variableType">变量名称</param>
+        /// <returns></returns>
+        public abstract string GetAssignmentValue(string variableType,string variableName);
     }
 }

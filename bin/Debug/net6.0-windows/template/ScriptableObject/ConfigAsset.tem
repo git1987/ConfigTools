@@ -36,7 +36,7 @@ public class #{ClassName}ConfigAsset : ConfigAssetBase
         }
     }
 
-    public override void ReadFromData(object obj)
+    public override void ReadFromJson(object obj)
     {
         JsonData jsonData = obj as JsonData;
         configs = new List<#{ClassName}Config>();

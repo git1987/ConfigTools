@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using ConfigTools.Excel;
 using LitJson;
 
 namespace ConfigTools
@@ -14,6 +15,10 @@ namespace ConfigTools
             writer = new(fileStream, System.Text.Encoding.UTF8);
             jsonData = new JsonData();
             jsonData["name"] = fileName + "Config";
+        }
+        public override void SetData(ReadExcelSheet sheet)
+        {
+
         }
         public void SetValue(int index, string key, string value, string type)
         {

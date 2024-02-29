@@ -1,4 +1,5 @@
-﻿using OfficeOpenXml;
+﻿using ConfigTools.DataType;
+using OfficeOpenXml;
 
 namespace ConfigTools.Excel
 {

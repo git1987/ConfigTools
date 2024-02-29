@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using ConfigTools.Excel;
+using System.IO;
 using System.Text;
 
 namespace ConfigTools
@@ -13,6 +14,9 @@ namespace ConfigTools
             Init(csvPath, configName + "Config.csv");
             writer = new(fileStream, Encoding.UTF8);
             config = new StringBuilder();
+        }
+        public override void SetData(ReadExcelSheet sheet)
+        {
         }
         public CsvWrite(string configName, string path)
         {

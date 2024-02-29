@@ -1,19 +1,33 @@
-﻿using System.IO;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using LitJson;
 
 public class LanguageDataConfigAsset : ConfigAssetBase
 {
     [System.Serializable]
     public class LanguageDataConfig : ConfigAssetBase.ConfigAsset
     {
+        public string key;
 		/*翻译key*/
         public string key;		/*中文*/
         public string zh;		/*英文*/
         public string en;		/*日文*/
         public string jp;		/*德语*/
         public string de;
+        public LanguageDataConfig()
+        {
+        }
+        public void InitJson(JsonData jd)
+        {
+            this.key = jd["key"].ToString();
+			/*翻译key*/
+            key = jd["key"].ToString();			/*中文*/
+            zh = jd["zh"].ToString();			/*英文*/
+            en = jd["en"].ToString();			/*日文*/
+            jp = jd["jp"].ToString();			/*德语*/
+            de = jd["de"].ToString();
+        }
         public string GetLanguageText(Enum_LanguageType type)
         {
             switch (type)
@@ -26,8 +40,8 @@ public class LanguageDataConfigAsset : ConfigAssetBase
             }
         }
     }
-    public List<LanguageDataConfig> configList;
-    public Dictionary<string, LanguageDataConfig> configs;
+    public List<LanguageDataConfig> configs;
+    public Dictionary<string, LanguageDataConfig> configsDictionary;
     
     public override string GetConfigName()
     {
@@ -35,39 +49,42 @@ public class LanguageDataConfigAsset : ConfigAssetBase
     }
     public string GetLanguageText(string key)
     {
-        if (configs.TryGetValue(key, out LanguageDataConfig config))
-            return config.GetLanguageText(ConfigAssetsData.languageType);
+        if (configsDictionary.TryGetValue(key, out LanguageDataConfig config))
+            return config.GetLanguageText(ConfigAssetData.languageType);
         else
         {
             return key;
         }
     }
-    protected override void ReadList()
+    public override void ReadList()
     {
-        configs = new Dictionary<string, LanguageDataConfig>();
-        for (int i = 0; i < configList.Count; i++)
+        configsDictionary = new Dictionary<string, LanguageDataConfig>();
+        for (int i = 0; i < configs.Count; i++)
         {
-            if (!configs.ContainsKey(configList[i].key))
-                configs.Add(configList[i].key, configList[i]);
+            if (!configsDictionary.ContainsKey(configs[i].key))
+                configsDictionary.Add(configs[i].key, configs[i]);
         }
     }
-    public override void ReadFromBytes(byte[] bytes)
+    public override void ReadFromData(object obj)
     {
-        MemoryStream stream = new(bytes);
-        BinaryReader reader = new BinaryReader(stream);
-        int dataCount = reader.ReadInt32();
-        configList = new List<LanguageDataConfig>(dataCount);
-	for(int i = 0;i < dataCount; i++)
+        JsonData jsonData = obj as JsonData;
+        configs = new List<LanguageDataConfig>();
+        if (jsonData["name"].ToString() == GetConfigName())
         {
-            LanguageDataConfig config = new();
-			/*翻译key*/
-            config.key = reader.ReadString();			/*中文*/
-            config.zh = reader.ReadString();			/*英文*/
-            config.en = reader.ReadString();			/*日文*/
-            config.jp = reader.ReadString();			/*德语*/
-            config.de = reader.ReadString();
-            configList.Add(config);
+            if (((IDictionary)jsonData).Contains("config"))
+            {
+                JsonData config = jsonData["config"];
+                for (int i = 0; i < config.Count; i++)
+                {
+                    LanguageDataConfig configItem = new LanguageDataConfig();
+                    configItem.InitJson(config[i]);
+                    configs.Add(configItem);
+                }
+            }
         }
-        ReadList();
+        else
+        {
+            throw new System.Exception("配置名称不对==>" + jsonData["name"].ToString());
+        }
     }
 }

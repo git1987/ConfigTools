@@ -11,6 +11,6 @@ public abstract class ConfigAssetBase : ScriptableObject
         public int ID;
     }
     public abstract string GetConfigName();
-    public abstract void ReadFromBytes(byte[] bytes);
+    public abstract void ReadFromJson(object obj);
     public abstract void ReadList();
 }

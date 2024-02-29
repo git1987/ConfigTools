@@ -1,4 +1,5 @@
-﻿using LitJson;
+﻿using ConfigTools.Excel;
+using LitJson;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,17 +15,17 @@ namespace ConfigTools
             string binaryPath = $"{Config.outputPath}/ConfigAssetBinary";
             Init(binaryPath, fileName + "Config.bytes");
         }
-        public void SetData(string[][] datas,List<string> typeList)
+        public override void SetData(ReadExcelSheet sheet)
         {
             BinaryWriter write = new BinaryWriter(fileStream);
-            write.Write(datas.Length);
+            write.Write(sheet.datas.Length);
             //遍历每行数据
-            for (int i = 0; i < datas.Length; i++)
+            for (int i = 0; i < sheet.datas.Length; i++)
             {
                 //遍历单个数据
-                for (int j = 0; j < datas[i].Length; j++)
+                for (int j = 0; j < sheet.datas[i].Length; j++)
                 {
-                    Write(write, typeList[j], datas[i][j]);
+                    Write(write, sheet.variableTypeList[j], sheet.datas[i][j]);
                     //write.Write(datas[i][j]);
                 }
             }
@@ -43,7 +44,7 @@ namespace ConfigTools
                     writer.Write(content.ToFloat());
                     break;
                 case "bool":
-                    writer.Write(content == "1");
+                    writer.Write(content == "1" || content.ToLower() == "true");
                     break;
                 default:
                     writer.Write(content);

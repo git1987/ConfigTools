@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using ConfigTools.DataType;
 using ConfigTools.Excel;
 using LitJson;
 
@@ -86,7 +87,7 @@ namespace ConfigTools
         {
             get { return Config.outputPath + "/ConfigAssetScript/"; }
         }
-        static string objectType;
+        static ObjectType objectType;
         public ScriptWrite(ReadExcelSheet sheet)
         {
             this.sheet = sheet;
@@ -95,9 +96,14 @@ namespace ConfigTools
             classNameList.Add(sheet.SheetName);
             className = sheet.SheetName + "ConfigAsset";
         }
-        public void CreateScript_Binary(ObjectType type, string templateFilePath)
+
+        public override void SetData(ReadExcelSheet sheet)
         {
-            objectType = type.GetType().Name;
+            throw new NotImplementedException();
+        }
+        public void CreateScript(ObjectType type, string templateFilePath)
+        {
+            objectType = type;
             StreamReader sr = new StreamReader(templateFilePath);
             string template = sr.ReadToEnd();
             scriptContent = new StringBuilder(template);
@@ -171,41 +177,8 @@ namespace ConfigTools
                         if (changeContent.ToString().IndexOf("#{assignment}") >= 0)
                         {
                             newContents.AppendLine("\t\t\t/*" + sheet.summarylist[k] + "*/");
-                            string assignmentValue;
-                            if (sheet.variableTypeList[k].ToLower() == "int")
-                            {
-                                assignmentValue = $"reader.ReadInt32()";
-                            }
-                            else if (sheet.variableTypeList[k].ToLower() == "long")
-                            {
-                                assignmentValue = $"reader.ReadInt64()";
-                            }
-                            else if (sheet.variableTypeList[k].ToLower() == "float")
-                            {
-                                assignmentValue = $"reader.ReadSingle()";
-                            }
-                            else if (sheet.variableTypeList[k].ToLower() == "string")
-                            {
-                                assignmentValue = $"reader.ReadString()";
-                            }
-                            else if (sheet.variableTypeList[k].ToLower() == "bool")
-                            {
-                                assignmentValue = $"reader.ReadBoolean()";
-                            }
-                            else if (sheet.variableTypeList[k].ToLower().IndexOf("list") >= 0)
-                            {
-                                assignmentValue = $"reader.ReadString().ToList<{sheet.variableTypeList[k].Substring(4)}";
-                            }
-                            else if (sheet.variableTypeList[k].ToLower().IndexOf("enum_") >= 0)
-                            {
-                                //自定义枚举
-                                assignmentValue = $"reader.ReadString().ToEnum<{sheet.variableTypeList[k]}>()";
-                            }
-                            else
-                            {
-                                Debug.LogError($"{sheet.excelName}=>{sheet.sheetName}==>{variableName}类型错误");
-                                throw new Exception("类型错误");
-                            }
+                            string assignmentValue =
+                                objectType.GetAssignmentValue(sheet.variableTypeList[k], sheet.variableNameList[k]);
                             changeContent.Replace("#{assignment}", assignmentValue);
                         }
                         //变量类型
@@ -247,7 +220,7 @@ namespace ConfigTools
         /// 根据模版内容创建脚本文件
         /// </summary>
         /// <param name="template"></param>
-        public void CreateScript_ScriptableObject(string templateFilePath)
+        private void CreateScript_ScriptableObject(string templateFilePath)
         {
             StreamReader sr = new StreamReader(templateFilePath);
             string template = sr.ReadToEnd();
@@ -308,28 +281,7 @@ namespace ConfigTools
                         if (changeContent.ToString().IndexOf("#{assignment}") >= 0)
                         {
                             newContents.AppendLine("\t\t\t/*" + sheet.summarylist[k] + "*/");
-                            StringBuilder str = new StringBuilder(string.Format("jd[\"{0}\"]", sheet.variableNameList[k]));
-                            if (sheet.variableTypeList[k].ToLower() == "string")
-                            {
-                                str = new StringBuilder(string.Format("{0}.ToString()", str));
-                            }
-                            else if (sheet.variableTypeList[k].ToLower() == "bool")
-                            {
-                                str = new StringBuilder(string.Format("{0}.ToString() == \"1\" ||{0}.ToString().ToLower() == \"true\"", str));
-                            }
-                            else if (sheet.variableTypeList[k].ToLower().IndexOf("list") >= 0)
-                            {
-                                str.Append(string.Format(".ToList{0}()", sheet.variableTypeList[k].Substring(4)));
-                            }
-                            else if (sheet.variableTypeList[k].ToLower().IndexOf("enum_") >= 0)
-                            {
-                                //自定义枚举
-                                str = new StringBuilder(string.Format("({0})System.Enum.Parse(typeof({0}), jd[\"{1}\"].ToString() == \"\" ? \"None\" : jd[\"{1}\"].ToString())", sheet.variableTypeList[k], sheet.variableNameList[k]));
-                            }
-                            else
-                            {
-                                str = new StringBuilder(string.Format("{0}.Parse({1}.ToString())", sheet.variableTypeList[k], str));
-                            }
+                            string str = string.Empty;
                             changeContent.Replace("#{assignment}", str.ToString());
                         }
                         //变量类型
@@ -402,12 +354,12 @@ namespace ConfigTools
             {
                 file.CopyTo($"{outputScriptPath}/{file.Name}", true);
             }
-            folder = new DirectoryInfo($"{Config.templatePath}/{objectType}");
+            folder = new DirectoryInfo($"{Config.templatePath}/{objectType.Name}");
             foreach (FileInfo file in folder.GetFiles("*.cs", SearchOption.AllDirectories))
             {
                 file.CopyTo($"{outputScriptPath}/{file.Name}", true);
             }
-            folder = new DirectoryInfo($"{Config.templatePath}/{objectType}");
+            folder = new DirectoryInfo($"{Config.templatePath}/{objectType.Name}");
             foreach (FileInfo file in folder.GetFiles("*.cseditor"))
             {
                 string fileName = file.Name;
@@ -418,7 +370,7 @@ namespace ConfigTools
         //生成完整的.cs脚本文件
         static private void WriteCSFile(string temFileName, string csFilePath)
         {
-            string tempFilePath = $"{Config.templatePath}/{objectType}/{temFileName}";
+            string tempFilePath = $"{Config.templatePath}/{objectType.Name}/{temFileName}";
             if (!File.Exists(tempFilePath))
             {
                 Debug.LogError($"{temFileName}文件不存在====>");

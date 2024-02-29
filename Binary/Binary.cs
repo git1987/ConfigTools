@@ -7,20 +7,23 @@ namespace ConfigTools.Binary
     /// </summary>
     internal class Binary : ObjectType
     {
-        public override void ReadExcels(string folder, bool useLanguage)
+        public override void ReadExcels(string folder)
         {
-            base.ReadExcels(folder, useLanguage);
+            base.ReadExcels(folder);
         }
-        public override void BuildCSharpFile(ReadExcelSheet sheet, bool isLanguage)
+        public override void BuildCSharpFile(ReadExcelSheet sheet)
         {
-            ScriptWrite scriptWrite = new ScriptWrite(sheet.sheetName, isLanguage);
-
+            ScriptWrite scriptWrite = new ScriptWrite(sheet);
+            scriptWrite.CreateScript_Binary(this, BuildScriptFilePath(sheet.sheetName));
+            scriptWrite.Save();
+            BuildDataFile(sheet);
         }
         //保存为bytes
         public override void BuildDataFile(ReadExcelSheet sheet)
         {
             BinaryWrite write = new BinaryWrite(sheet.sheetName);
             write.SetData(sheet.datas);
+            write.Save();
         }
     }
 }

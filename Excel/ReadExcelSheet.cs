@@ -36,7 +36,7 @@ namespace ConfigTools.Excel
                 }
                 else
                 {
-                    Debug.Log(Debug.Type.Error, $"{sheet.Name}=>{variableNameList[variableNameList.Count - 1]}后，有空的变量名");
+                    Debug.LogError($"{sheet.Name}=>{variableNameList[variableNameList.Count - 1]}后，有空的变量名");
                     columnCount = variableNameList.Count;
                 }
             }
@@ -49,10 +49,28 @@ namespace ConfigTools.Excel
             //是否导出标记：0|""全部导出
             SetValue(out buildSignList, 5, columnCount);
 
+            if (sheetName == "language")
+            {
+                string languageEnumName = "Enum_LanguageType";
+                //导出多语言枚举
+                for (int i = 1; i < variableNameList.Count; i++)
+                {
+                    ObjectType.configEnum.AddEnum(languageEnumName,
+                        variableNameList[i],
+                        null,
+                        summarylist[i]);
+                }
+                ObjectType.configEnum.AddEnumSummary(languageEnumName, "多语言枚举");
+            }
             //数据
             SetDatas();
-            Debug.Log(Debug.Type.Log, "保存数据完毕");
+            Debug.Log("保存数据完毕");
         }
+        public void SetExcelName(string excelName)
+        {
+            this.excelName = excelName;
+        }
+
         void SetValue(out List<string> contentList, int rowIndex, int columnCount)
         {
             contentList = new(columnCount);

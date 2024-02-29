@@ -14,13 +14,14 @@ namespace ConfigTools
             instance = this;
             InitializeComponent();
             ClearLog_Click(null, null);
+            string relativePath = AppDomain.CurrentDomain.BaseDirectory;
+            Debug.Log(relativePath);
             LogPanel.AutoScroll = true;
             LogPanel.Controls.Add(LogLabel);
             progress = new BuildProgress(BuildProgressBar);
             //
             Config.Init();
             ExcelPath.Text = Config.readExcelPath;
-            OutputPath.Text = Config.unityPath;
             BuildSign.Text = Config.outputType;
             //test
             Timers timer = new Timers() { Interval = 1 };
@@ -38,8 +39,7 @@ namespace ConfigTools
         {
             BinaryButton.Enabled =
                 ScriptableObjectButton.Enabled =
-                Directory.Exists(ExcelPath.Text) &&
-                Directory.Exists(OutputPath.Text);
+                Directory.Exists(ExcelPath.Text);
             if (Directory.Exists(ExcelPath.Text))
             {
                 ExcelPathError.Text = string.Empty;
@@ -63,36 +63,6 @@ namespace ConfigTools
                 }
             }
         }
-        //output path
-        private void OutputPath_TextChanged(object sender, EventArgs e)
-        {
-            BinaryButton.Enabled =
-                ScriptableObjectButton.Enabled =
-                Directory.Exists(ExcelPath.Text) &&
-                Directory.Exists(OutputPath.Text);
-            if (Directory.Exists(OutputPath.Text))
-            {
-                OutputPathError.Text = string.Empty;
-            }
-            else
-            {
-                OutputPathError.Text = "Output Path Error!";
-            }
-        }
-        //select output path
-        private void OutputButton_Click(object sender, EventArgs e)
-        {
-            using (FolderBrowserDialog open = new FolderBrowserDialog())
-            {
-                open.InitialDirectory = Environment.CurrentDirectory;
-                DialogResult result = open.ShowDialog();
-                if (result == DialogResult.OK)
-                {
-                    OutputPath.Text = open.SelectedPath;
-                    AddLog(open.SelectedPath);
-                }
-            }
-        }
 
         public void AddLog(string content)
         {
@@ -109,14 +79,14 @@ namespace ConfigTools
         {
             AddLog($"build ScriptableObject, is Language:{UseLanguage.Checked}");
             ObjectType type = new ScriptableObject.ScriptableObject();
-            type.ReadExcels(ExcelPath.Text, UseLanguage.Checked);
+            type.ReadExcels(ExcelPath.Text);
         }
 
         private void BinaryButton_Click(object sender, EventArgs e)
         {
             AddLog("build Binary");
             ObjectType type = new Binary.Binary();
-            type.ReadExcels(ExcelPath.Text, UseLanguage.Checked);
+            type.ReadExcels(ExcelPath.Text);
         }
 
         private void ClearLog_Click(object sender, EventArgs e)
@@ -128,6 +98,11 @@ namespace ConfigTools
         private void BuildSign_SelectedIndexChanged(object sender, EventArgs e)
         {
             Config.outputType = BuildSign.Text;
+        }
+
+        private void UseLanguage_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.isLanguage = UseLanguage.Checked;
         }
     }
 }

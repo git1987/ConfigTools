@@ -1,9 +1,7 @@
-using UnityEngine;
-
 /// <summary>
 /// 配置容器类
 /// </summary>
-public abstract class ConfigAssetBase : ScriptableObject
+public abstract class ConfigAssetBase
 {
     //配置基类
     public class ConfigAsset

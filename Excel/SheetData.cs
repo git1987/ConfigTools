@@ -19,9 +19,15 @@ namespace ConfigTools.Excel
         public string[][] datas { private set; get; }
         protected ExcelWorksheet sheet;
         public string sheetName => sheet.Name;
+        public string excelName { protected set; get; }
+        /// <summary>
+        /// 首字母大写sheet名称
+        /// </summary>
+        public string SheetName { private set; get; }
         public SheetData(ExcelWorksheet sheet)
         {
             this.sheet = sheet;
+            SheetName = Tool.FirstUpper(sheetName);
             //行
             rowCount = sheet.Rows.Count();
             //列数

@@ -10,14 +10,19 @@ namespace ConfigTools
         {
             if (!Directory.Exists(filePath))
                 Directory.CreateDirectory(filePath);
-            fileStream = new FileStream(filePath + fileName, FileMode.OpenOrCreate, FileAccess.Write);
+            fileStream = new FileStream($"{filePath}/{fileName}", FileMode.OpenOrCreate, FileAccess.Write);
         }
         public virtual void Save()
         {
-            fileStream.Flush();
-            fileStream.Close();
-            fileStream = null;
+            if (fileStream != null)
+            {
+                //fileStream.Flush();
+                fileStream.Close();
+                fileStream = null;
+            }
+            else {
+                Debug.LogError("已经被释放掉了");
+            }
         }
-
     }
 }

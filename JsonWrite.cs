@@ -9,7 +9,7 @@ namespace ConfigTools
         protected StreamWriter writer;
         public JsonWrite(string fileName)
         {
-            string jsonPath = Config.writeDataPath + "ConfigAssetJson/";
+            string jsonPath = $"{Config.outputPath}/ConfigAssetJson/";
             Init(jsonPath, fileName + "Config.json");
             writer = new(fileStream, System.Text.Encoding.UTF8);
             jsonData = new JsonData();

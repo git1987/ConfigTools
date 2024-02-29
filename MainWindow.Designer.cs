@@ -28,221 +28,167 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.ExcelPath = new System.Windows.Forms.TextBox();
-            this.SelectExcelPath = new System.Windows.Forms.Button();
-            this.ScriptableObjectButton = new System.Windows.Forms.Button();
-            this.BinaryButton = new System.Windows.Forms.Button();
-            this.BuildProgressBar = new System.Windows.Forms.ProgressBar();
-            this.LogPanel = new System.Windows.Forms.Panel();
-            this.LogLabel = new System.Windows.Forms.Label();
-            this.OutputPath = new System.Windows.Forms.TextBox();
-            this.OutputButton = new System.Windows.Forms.Button();
-            this.ExcelPathError = new System.Windows.Forms.LinkLabel();
-            this.OutputPathError = new System.Windows.Forms.LinkLabel();
-            this.ClearLog = new System.Windows.Forms.Button();
-            this.UseLanguage = new System.Windows.Forms.CheckBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.BuildSign = new System.Windows.Forms.ComboBox();
-            this.LogPanel.SuspendLayout();
-            this.SuspendLayout();
+            ExcelPath = new TextBox();
+            SelectExcelPath = new Button();
+            ScriptableObjectButton = new Button();
+            BinaryButton = new Button();
+            BuildProgressBar = new ProgressBar();
+            LogPanel = new Panel();
+            LogLabel = new Label();
+            ExcelPathError = new LinkLabel();
+            ClearLog = new Button();
+            UseLanguage = new CheckBox();
+            label1 = new Label();
+            BuildSign = new ComboBox();
+            LogPanel.SuspendLayout();
+            SuspendLayout();
             // 
             // ExcelPath
             // 
-            this.ExcelPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.ExcelPath.Font = new System.Drawing.Font("Microsoft YaHei UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.ExcelPath.Location = new System.Drawing.Point(30, 32);
-            this.ExcelPath.Name = "ExcelPath";
-            this.ExcelPath.Size = new System.Drawing.Size(517, 24);
-            this.ExcelPath.TabIndex = 0;
-            this.ExcelPath.TextChanged += new System.EventHandler(this.ExcelPath_TextChanged);
+            ExcelPath.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            ExcelPath.Font = new Font("Microsoft YaHei UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            ExcelPath.Location = new Point(30, 32);
+            ExcelPath.Name = "ExcelPath";
+            ExcelPath.Size = new Size(517, 24);
+            ExcelPath.TabIndex = 0;
+            ExcelPath.TextChanged += ExcelPath_TextChanged;
             // 
             // SelectExcelPath
             // 
-            this.SelectExcelPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.SelectExcelPath.Location = new System.Drawing.Point(580, 30);
-            this.SelectExcelPath.Name = "SelectExcelPath";
-            this.SelectExcelPath.Size = new System.Drawing.Size(120, 30);
-            this.SelectExcelPath.TabIndex = 1;
-            this.SelectExcelPath.Text = "选择excel路径";
-            this.SelectExcelPath.UseVisualStyleBackColor = true;
-            this.SelectExcelPath.Click += new System.EventHandler(this.SelectExcelPath_Click);
+            SelectExcelPath.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            SelectExcelPath.Location = new Point(580, 30);
+            SelectExcelPath.Name = "SelectExcelPath";
+            SelectExcelPath.Size = new Size(120, 30);
+            SelectExcelPath.TabIndex = 1;
+            SelectExcelPath.Text = "选择excel路径";
+            SelectExcelPath.UseVisualStyleBackColor = true;
+            SelectExcelPath.Click += SelectExcelPath_Click;
             // 
             // ScriptableObjectButton
             // 
-            this.ScriptableObjectButton.Font = new System.Drawing.Font("Microsoft YaHei UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.ScriptableObjectButton.Location = new System.Drawing.Point(30, 152);
-            this.ScriptableObjectButton.Name = "ScriptableObjectButton";
-            this.ScriptableObjectButton.Size = new System.Drawing.Size(145, 35);
-            this.ScriptableObjectButton.TabIndex = 2;
-            this.ScriptableObjectButton.Text = "导出ScriptableObject";
-            this.ScriptableObjectButton.UseVisualStyleBackColor = true;
-            this.ScriptableObjectButton.Click += new System.EventHandler(this.ScriptableObjectButton_Click);
+            ScriptableObjectButton.Font = new Font("Microsoft YaHei UI", 13F, FontStyle.Regular, GraphicsUnit.Point);
+            ScriptableObjectButton.Location = new Point(30, 100);
+            ScriptableObjectButton.Name = "ScriptableObjectButton";
+            ScriptableObjectButton.Size = new Size(145, 35);
+            ScriptableObjectButton.TabIndex = 2;
+            ScriptableObjectButton.Text = "导出ScriptableObject";
+            ScriptableObjectButton.UseVisualStyleBackColor = true;
+            ScriptableObjectButton.Click += ScriptableObjectButton_Click;
             // 
             // BinaryButton
             // 
-            this.BinaryButton.Font = new System.Drawing.Font("Microsoft YaHei UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.BinaryButton.Location = new System.Drawing.Point(220, 152);
-            this.BinaryButton.Name = "BinaryButton";
-            this.BinaryButton.Size = new System.Drawing.Size(200, 35);
-            this.BinaryButton.TabIndex = 3;
-            this.BinaryButton.Text = "导出二进制";
-            this.BinaryButton.UseVisualStyleBackColor = true;
-            this.BinaryButton.Click += new System.EventHandler(this.BinaryButton_Click);
+            BinaryButton.Font = new Font("Microsoft YaHei UI", 15F, FontStyle.Regular, GraphicsUnit.Point);
+            BinaryButton.Location = new Point(228, 100);
+            BinaryButton.Name = "BinaryButton";
+            BinaryButton.Size = new Size(200, 35);
+            BinaryButton.TabIndex = 3;
+            BinaryButton.Text = "导出二进制";
+            BinaryButton.UseVisualStyleBackColor = true;
+            BinaryButton.Click += BinaryButton_Click;
             // 
             // BuildProgressBar
             // 
-            this.BuildProgressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.BuildProgressBar.Location = new System.Drawing.Point(30, 215);
-            this.BuildProgressBar.Name = "BuildProgressBar";
-            this.BuildProgressBar.Size = new System.Drawing.Size(660, 30);
-            this.BuildProgressBar.TabIndex = 4;
+            BuildProgressBar.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            BuildProgressBar.Location = new Point(30, 215);
+            BuildProgressBar.Name = "BuildProgressBar";
+            BuildProgressBar.Size = new Size(660, 30);
+            BuildProgressBar.TabIndex = 4;
             // 
             // LogPanel
             // 
-            this.LogPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.LogPanel.Controls.Add(this.LogLabel);
-            this.LogPanel.Location = new System.Drawing.Point(30, 272);
-            this.LogPanel.Name = "LogPanel";
-            this.LogPanel.Size = new System.Drawing.Size(660, 160);
-            this.LogPanel.TabIndex = 5;
-            this.LogPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.LogPanel_Paint);
+            LogPanel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            LogPanel.Controls.Add(LogLabel);
+            LogPanel.Location = new Point(30, 272);
+            LogPanel.Name = "LogPanel";
+            LogPanel.Size = new Size(660, 160);
+            LogPanel.TabIndex = 5;
+            LogPanel.Paint += LogPanel_Paint;
             // 
             // LogLabel
             // 
-            this.LogLabel.AutoSize = true;
-            this.LogLabel.Location = new System.Drawing.Point(28, 12);
-            this.LogLabel.Name = "LogLabel";
-            this.LogLabel.Size = new System.Drawing.Size(44, 17);
-            this.LogLabel.TabIndex = 0;
-            this.LogLabel.Text = "日志：";
-            // 
-            // OutputPath
-            // 
-            this.OutputPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.OutputPath.Font = new System.Drawing.Font("Microsoft YaHei UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.OutputPath.Location = new System.Drawing.Point(30, 93);
-            this.OutputPath.Name = "OutputPath";
-            this.OutputPath.Size = new System.Drawing.Size(517, 24);
-            this.OutputPath.TabIndex = 6;
-            this.OutputPath.TextChanged += new System.EventHandler(this.OutputPath_TextChanged);
-            // 
-            // OutputButton
-            // 
-            this.OutputButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.OutputButton.Location = new System.Drawing.Point(582, 91);
-            this.OutputButton.Name = "OutputButton";
-            this.OutputButton.Size = new System.Drawing.Size(120, 30);
-            this.OutputButton.TabIndex = 7;
-            this.OutputButton.Text = "导出路径";
-            this.OutputButton.UseVisualStyleBackColor = true;
-            this.OutputButton.Click += new System.EventHandler(this.OutputButton_Click);
+            LogLabel.AutoSize = true;
+            LogLabel.Location = new Point(28, 12);
+            LogLabel.Name = "LogLabel";
+            LogLabel.Size = new Size(44, 17);
+            LogLabel.TabIndex = 0;
+            LogLabel.Text = "日志：";
             // 
             // ExcelPathError
             // 
-            this.ExcelPathError.AutoSize = true;
-            this.ExcelPathError.LinkColor = System.Drawing.Color.Red;
-            this.ExcelPathError.Location = new System.Drawing.Point(30, 59);
-            this.ExcelPathError.Name = "ExcelPathError";
-            this.ExcelPathError.Size = new System.Drawing.Size(56, 17);
-            this.ExcelPathError.TabIndex = 8;
-            this.ExcelPathError.TabStop = true;
-            this.ExcelPathError.Text = "路径错误";
-            // 
-            // OutputPathError
-            // 
-            this.OutputPathError.AutoSize = true;
-            this.OutputPathError.LinkColor = System.Drawing.Color.Red;
-            this.OutputPathError.Location = new System.Drawing.Point(30, 120);
-            this.OutputPathError.Name = "OutputPathError";
-            this.OutputPathError.Size = new System.Drawing.Size(56, 17);
-            this.OutputPathError.TabIndex = 9;
-            this.OutputPathError.TabStop = true;
-            this.OutputPathError.Text = "路径错误";
+            ExcelPathError.AutoSize = true;
+            ExcelPathError.LinkColor = Color.Red;
+            ExcelPathError.Location = new Point(30, 59);
+            ExcelPathError.Name = "ExcelPathError";
+            ExcelPathError.Size = new Size(56, 17);
+            ExcelPathError.TabIndex = 8;
+            ExcelPathError.TabStop = true;
+            ExcelPathError.Text = "路径错误";
             // 
             // ClearLog
             // 
-            this.ClearLog.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.ClearLog.Location = new System.Drawing.Point(615, 438);
-            this.ClearLog.Name = "ClearLog";
-            this.ClearLog.Size = new System.Drawing.Size(75, 25);
-            this.ClearLog.TabIndex = 10;
-            this.ClearLog.Text = "Clear";
-            this.ClearLog.UseVisualStyleBackColor = true;
-            this.ClearLog.Click += new System.EventHandler(this.ClearLog_Click);
+            ClearLog.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            ClearLog.Location = new Point(615, 438);
+            ClearLog.Name = "ClearLog";
+            ClearLog.Size = new Size(75, 25);
+            ClearLog.TabIndex = 10;
+            ClearLog.Text = "Clear";
+            ClearLog.UseVisualStyleBackColor = true;
+            ClearLog.Click += ClearLog_Click;
             // 
             // UseLanguage
             // 
-            this.UseLanguage.AutoSize = true;
-            this.UseLanguage.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point);
-            this.UseLanguage.Location = new System.Drawing.Point(451, 158);
-            this.UseLanguage.Name = "UseLanguage";
-            this.UseLanguage.Size = new System.Drawing.Size(93, 26);
-            this.UseLanguage.TabIndex = 11;
-            this.UseLanguage.Text = "是否翻译";
-            this.UseLanguage.UseVisualStyleBackColor = true;
+            UseLanguage.AutoSize = true;
+            UseLanguage.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
+            UseLanguage.Location = new Point(30, 158);
+            UseLanguage.Name = "UseLanguage";
+            UseLanguage.Size = new Size(93, 26);
+            UseLanguage.TabIndex = 11;
+            UseLanguage.Text = "是否翻译";
+            UseLanguage.UseVisualStyleBackColor = true;
+            UseLanguage.CheckedChanged += UseLanguage_CheckedChanged;
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(607, 163);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(80, 17);
-            this.label1.TabIndex = 13;
-            this.label1.Text = "导出配置标记";
+            label1.AutoSize = true;
+            label1.Location = new Point(210, 163);
+            label1.Name = "label1";
+            label1.Size = new Size(80, 17);
+            label1.TabIndex = 13;
+            label1.Text = "导出配置标记";
             // 
             // BuildSign
             // 
-            this.BuildSign.FormattingEnabled = true;
-            this.BuildSign.Items.AddRange(new object[] {
-            "0",
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9",
-            "10"});
-            this.BuildSign.Location = new System.Drawing.Point(569, 158);
-            this.BuildSign.Name = "BuildSign";
-            this.BuildSign.Size = new System.Drawing.Size(32, 25);
-            this.BuildSign.TabIndex = 14;
-            this.BuildSign.Text = "0";
-            this.BuildSign.SelectedIndexChanged += new System.EventHandler(this.BuildSign_SelectedIndexChanged);
+            BuildSign.FormattingEnabled = true;
+            BuildSign.Items.AddRange(new object[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" });
+            BuildSign.Location = new Point(172, 158);
+            BuildSign.Name = "BuildSign";
+            BuildSign.Size = new Size(32, 25);
+            BuildSign.TabIndex = 14;
+            BuildSign.Text = "0";
+            BuildSign.SelectedIndexChanged += BuildSign_SelectedIndexChanged;
             // 
             // MainWindow
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(714, 473);
-            this.Controls.Add(this.BuildSign);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.UseLanguage);
-            this.Controls.Add(this.ClearLog);
-            this.Controls.Add(this.OutputPathError);
-            this.Controls.Add(this.ExcelPathError);
-            this.Controls.Add(this.OutputButton);
-            this.Controls.Add(this.OutputPath);
-            this.Controls.Add(this.LogPanel);
-            this.Controls.Add(this.BuildProgressBar);
-            this.Controls.Add(this.BinaryButton);
-            this.Controls.Add(this.ScriptableObjectButton);
-            this.Controls.Add(this.SelectExcelPath);
-            this.Controls.Add(this.ExcelPath);
-            this.Name = "MainWindow";
-            this.Text = "窗口";
-            this.LogPanel.ResumeLayout(false);
-            this.LogPanel.PerformLayout();
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new SizeF(7F, 17F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(714, 473);
+            Controls.Add(BuildSign);
+            Controls.Add(label1);
+            Controls.Add(UseLanguage);
+            Controls.Add(ClearLog);
+            Controls.Add(ExcelPathError);
+            Controls.Add(LogPanel);
+            Controls.Add(BuildProgressBar);
+            Controls.Add(BinaryButton);
+            Controls.Add(ScriptableObjectButton);
+            Controls.Add(SelectExcelPath);
+            Controls.Add(ExcelPath);
+            Name = "MainWindow";
+            Text = "窗口";
+            LogPanel.ResumeLayout(false);
+            LogPanel.PerformLayout();
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -254,10 +200,7 @@
         private ProgressBar BuildProgressBar;
         private Panel LogPanel;
         private Label LogLabel;
-        private TextBox OutputPath;
-        private Button OutputButton;
         private LinkLabel ExcelPathError;
-        private LinkLabel OutputPathError;
         private Button ClearLog;
         private CheckBox UseLanguage;
         private Label label1;

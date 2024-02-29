@@ -45,7 +45,7 @@ public class ConfigAssetsData : MonoBehaviour
 #else
         TextAsset asset = ab.LoadAsset<TextAsset>(typeof(V).Name);
 #endif
-        T config = new T();
+        T config = default(T);
         if (config != null)
         {
             config.ReadFromBytes(asset.bytes);

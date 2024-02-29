@@ -38,6 +38,17 @@ public class CreateConfig
             index++;
         }
 #if UNITY_ANDROID
+        string targetPath = Application.streamingAssetsPath + "/Config/Android/";
+#elif UNITY_IOS
+        string targetPath = Application.streamingAssetsPath + "/Config/IOS/";
+#elif UNITY_STANDALONE_WIN
+        string targetPath = Application.streamingAssetsPath + "/Config/Windows/";
+#elif UNITY_WEBGL
+        string targetPath = Application.streamingAssetsPath + "/Config/WebGL/";
+#else
+        string targetPath = Application.streamingAssetsPath + "/Config/Other/";
+#endif
+#if UNITY_ANDROID
         //移动端压缩ab
         manifest = BuildPipeline.BuildAssetBundles(targetPath, abb, BuildAssetBundleOptions.ChunkBasedCompression, BuildTarget.Android);
 #elif UNITY_IOS

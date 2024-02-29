@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System.IO;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,8 +17,7 @@ public class #{ClassName}ConfigAsset : ConfigAssetBase
             {
                 case Enum_LanguageType.Base:
 #if List
-                case Enum_LanguageType.#{variableName}:
-                    return #{variableName};
+                case Enum_LanguageType.#{variableName}:return #{variableName};
 #endif
                 default:
                     UnityEngine.Debug.LogError(type.ToString() + " is null===>" + key);
@@ -35,7 +35,7 @@ public class #{ClassName}ConfigAsset : ConfigAssetBase
     public string GetLanguageText(string key)
     {
         if (configs.TryGetValue(key, out #{ClassName}Config config))
-            return config.GetLanguageText(ConfigAssetData.languageType);
+            return config.GetLanguageText(ConfigAssetsData.languageType);
         else
         {
             return key;
@@ -50,19 +50,19 @@ public class #{ClassName}ConfigAsset : ConfigAssetBase
                 configs.Add(configList[i].key, configList[i]);
         }
     }
-    public override void ReadFromData(object obj)
+    public override void ReadFromBytes(byte[] bytes)
     {
         MemoryStream stream = new(bytes);
         BinaryReader reader = new BinaryReader(stream);
         int dataCount = reader.ReadInt32();
         configList = new List<#{ClassName}Config>(dataCount);
-        for(int i = 0;i < dataCount; i++)
+	for(int i = 0;i < dataCount; i++)
         {
             #{ClassName}Config config = new();
 #if List
-            #{variableName} = #{assignment};
+            config.#{variableName} = #{assignment};
 #endif
-        configList.Add(config);
+            configList.Add(config);
         }
         ReadList();
     }

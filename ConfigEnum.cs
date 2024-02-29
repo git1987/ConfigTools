@@ -88,8 +88,7 @@ namespace ConfigTools
                 {
                     sb.Append(EnumString(enumName, enums[enumName]));
                 }
-                string path = Config.writeScriptPath + "Config_Enum.cs";
-                FileStream fs = new FileStream(path, FileMode.Create);
+                FileStream fs = new FileStream(filePath, FileMode.Create);
                 StreamWriter sw = new StreamWriter(fs);
                 sw.Write(sb.ToString());
                 Console.WriteLine(sb.ToString());

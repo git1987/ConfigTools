@@ -11,12 +11,13 @@ namespace ConfigTools
     {
         public BinaryWrite(string fileName)
         {
-            string binaryPath = Config.writeDataPath + "ConfigAssetBinary/";
+            string binaryPath = $"{Config.outputPath}/ConfigAssetBinary";
             Init(binaryPath, fileName + "Config.bytes");
         }
         public void SetData(string[][] datas)
         {
             BinaryWriter write = new BinaryWriter(fileStream);
+            write.Write(datas[0].Length);
             for (int i = 0; i < datas.Length; i++)
             {
                 for (int j = 0; j < datas[i].Length; j++)

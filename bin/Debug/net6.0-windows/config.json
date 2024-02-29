@@ -1,6 +1,5 @@
 {
-  "excel": "E:/Git/ConfigTools/bin/Debug/net6.0-windows/excel",
-  "unitypath": "E:/Git/ConfigTools/bin/Debug/game/Assets/",
-  "outputDataPath": "E:/Git/ConfigTools/bin/Debug/game/Assets/ConfigAsset",
+  "excel": "E:/git/ConfigTools/bin/Debug/net6.0-windows/excel",
+  "unitypath": "E:/git/ConfigTools/bin/Debug/game/Assets",
   "outputType": "0"
 }

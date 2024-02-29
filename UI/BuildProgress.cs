@@ -39,7 +39,7 @@ namespace ConfigTools.UI
         {
             bar.Value = 100;
             begin = false;
-            Debug.Log(Debug.Type.Log,"进度条完成");
+            Debug.Log("进度条完成");
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System.IO;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 /// <summary>
@@ -12,7 +13,6 @@ public class #{ClassName}ConfigAsset : ConfigAssetBase
 #if List
         #{typeName} #{variableName};
 #endif
-        }
     }
     public List<#{ClassName}Config> configList;
     public Dictionary<int, #{ClassName}Config> configs;
@@ -28,11 +28,11 @@ public class #{ClassName}ConfigAsset : ConfigAssetBase
         }
         else
         {
-            Debug.LogError($"{ID}:config is null!");
+            Debug.LogError($"{configID}:config is null!");
             return null;
         } 
     }
-    public override void ReadList()
+    protected override void ReadList()
     {
         configs = new Dictionary<int, #{ClassName}Config>();
         for (int i = 0; i < configList.Count; i++)
@@ -42,7 +42,7 @@ public class #{ClassName}ConfigAsset : ConfigAssetBase
         }
     }
 
-    public override void ReadFromData(byte[] bytes)
+    public override void ReadFromBytes(byte[] bytes)
     {
         MemoryStream stream = new(bytes);
         BinaryReader reader = new BinaryReader(stream);
@@ -52,9 +52,9 @@ public class #{ClassName}ConfigAsset : ConfigAssetBase
         {
             #{ClassName}Config config = new();
 #if List
-            #{variableName} = #{assignment};
+            config.#{variableName} = #{assignment};
 #endif
-        configList.Add(config);
+            configList.Add(config);
         }
         ReadList();
     }

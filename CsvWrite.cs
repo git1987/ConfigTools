@@ -9,7 +9,7 @@ namespace ConfigTools
         protected StreamWriter writer;
         public CsvWrite(string configName)
         {
-            string csvPath = Config.writeDataPath + "ConfigAssetCsv/";
+            string csvPath = Config.outputPath + "/ConfigAssetCsv";
             Init(csvPath, configName + "Config.csv");
             writer = new(fileStream, Encoding.UTF8);
             config = new StringBuilder();

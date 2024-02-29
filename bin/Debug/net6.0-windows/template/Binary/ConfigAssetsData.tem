@@ -40,12 +40,12 @@ public class ConfigAssetsData : MonoBehaviour
     T GetConfigAsset<T, V>() where T : ConfigAssetBase  where V : ConfigAssetBase.ConfigAsset
     {
 #if UNITY_EDITOR
-        string filePath = $"Assets/ConfigAsset/{typeof(V).Name}.bytes";
-        TextAsset asset = ab.LoadAsset<TextAsset>(filePath);
+        string filePath = $"Assets/ConfigAssets/ConfigAssetBinary/{typeof(V).Name}.bytes";
+        TextAsset asset = AssetDatabase.LoadAssetAtPath<TextAsset>(filePath);
 #else
         TextAsset asset = ab.LoadAsset<TextAsset>(typeof(V).Name);
 #endif
-        T config = default(T);
+        T config = System.Activator.CreateInstance<T>();
         if (config != null)
         {
             config.ReadFromBytes(asset.bytes);

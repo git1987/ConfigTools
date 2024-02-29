@@ -21,8 +21,9 @@ namespace ConfigTools.Binary
         //保存为bytes
         public override void BuildDataFile(ReadExcelSheet sheet)
         {
-            BinaryWrite write = new BinaryWrite(sheet.sheetName);
-            write.SetData(sheet.datas);
+            //配置文件名称用首字母大写
+            BinaryWrite write = new BinaryWrite(sheet.SheetName);
+            write.SetData(sheet.datas,sheet.variableTypeList);
             write.Save();
         }
     }

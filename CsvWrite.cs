@@ -1,9 +1,11 @@
 ﻿using ConfigTools.Excel;
-using System.IO;
 using System.Text;
 
 namespace ConfigTools
 {
+    /// <summary>
+    /// 写入Csv格式文件
+    /// </summary>
     internal class CsvWrite : DataWrite
     {
         StringBuilder config;

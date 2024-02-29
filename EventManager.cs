@@ -1,8 +1,4 @@
-﻿using ConfigTools;
-using System;
-using System.Collections.Generic;
-
-namespace ConfigTools
+﻿namespace ConfigTools
 {
     /// <summary>
     /// 无参无返回值委托

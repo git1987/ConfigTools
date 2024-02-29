@@ -1,6 +1,4 @@
 ﻿using ConfigTools.Excel;
-using Excel;
-using System.Text;
 
 namespace ConfigTools.DataType
 {

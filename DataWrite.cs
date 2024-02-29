@@ -1,9 +1,10 @@
 ﻿using ConfigTools.Excel;
-using System.IO;
-using System.IO.Pipes;
 
 namespace ConfigTools
 {
+    /// <summary>
+    /// 数据写入
+    /// </summary>
     internal abstract class DataWrite
     {
         protected FileStream fileStream;

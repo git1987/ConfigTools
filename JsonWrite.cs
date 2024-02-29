@@ -4,6 +4,9 @@ using LitJson;
 
 namespace ConfigTools
 {
+    /// <summary>
+    /// 写入json格式文件
+    /// </summary>
     internal class JsonWrite : DataWrite
     {
         public JsonData jsonData;

@@ -1,13 +1,10 @@
 ﻿using ConfigTools.Excel;
-using LitJson;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ConfigTools
 {
+    /// <summary>
+    /// 写入二进制文件
+    /// </summary>
     internal class BinaryWrite : DataWrite
     {
         public BinaryWrite(string fileName)

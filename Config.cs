@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections;
-using System.Diagnostics.Eventing.Reader;
-using System.IO;
+﻿using System.Collections;
 using System.Text;
 using LitJson;
 
 namespace ConfigTools
 {
+    /// <summary>
+    /// 程序配置、参数
+    /// </summary>
     internal sealed class Config
     {
         static private string _appPath = string.Empty;

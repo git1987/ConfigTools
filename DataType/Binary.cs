@@ -45,7 +45,7 @@ namespace ConfigTools.DataType
             }
             else if (variableType.ToLower().IndexOf("list") >= 0)
             {
-                assignmentValue = $"reader.ReadString().ToList<{variableType.Substring(4)}";
+                assignmentValue = $"reader.ReadString().ToList{variableType.Substring(4)}()";
             }
             else if (variableType.ToLower().IndexOf("enum_") >= 0)
             {

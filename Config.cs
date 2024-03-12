@@ -17,12 +17,12 @@ namespace ConfigTools
                 if (_appPath == string.Empty)
                 {
                     _appPath = Tool.ResetPathSlash(System.AppDomain.CurrentDomain.BaseDirectory);
-                    Console.WriteLine("工具路径：" + _appPath);
+                    //Console.WriteLine("工具路径：" + _appPath);
                 }
                 return _appPath;
             }
         }
-        static public string configFile => $"{appPath}/config.json";
+        static public string configFile => $"{appPath}config.json";
         /// <summary>
         /// 是否翻译
         /// </summary>
@@ -44,8 +44,8 @@ namespace ConfigTools
             else
             {
                 jd = new JsonData();
-                if (Directory.Exists($"{appPath}/excel"))
-                    jd["excel"] = $"{appPath}/excel";
+                if (Directory.Exists($"{appPath}excel"))
+                    jd["excel"] = $"{appPath}excel";
                 else
                     jd["excel"] = "excel配置路径";
                 jd["outputType"] = "0";
@@ -92,7 +92,7 @@ namespace ConfigTools
         /// <summary>
         /// 模板文件路径
         /// </summary>
-        internal static string templatePath => $"{appPath}/template";
+        internal static string templatePath => $"{appPath}template";
         /// <summary>
         /// 导出类型
         /// 0:全部导出
@@ -101,7 +101,7 @@ namespace ConfigTools
         /// </summary>
         internal static string outputType { set; get; }
 
-        private static void Modify()
+        internal static void Modify()
         {
             FileStream fs = new FileStream(configFile, FileMode.Create, FileAccess.Write);
             JsonData jd = new JsonData();

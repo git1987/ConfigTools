@@ -81,6 +81,7 @@ namespace ConfigTools
             AddLog($"build ScriptableObject, is Language:{UseLanguage.Checked}");
             ObjectType type = new ScriptableObject();
             type.ReadExcels(ExcelPath.Text);
+            Config.Modify();
         }
 
         private void BinaryButton_Click(object sender, EventArgs e)
@@ -88,6 +89,7 @@ namespace ConfigTools
             AddLog("build Binary");
             ObjectType type = new Binary();
             type.ReadExcels(ExcelPath.Text);
+            Config.Modify();
         }
 
         private void ClearLog_Click(object sender, EventArgs e)

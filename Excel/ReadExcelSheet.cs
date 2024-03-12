@@ -73,6 +73,13 @@ namespace ConfigTools.Excel
             for (int i = 1; i <= columnCount; i++)
             {
                 string value = sheet.Cells[rowIndex, i].Text;
+                if (rowIndex == 2)
+                {
+                    if (value.ToLower().IndexOf("list") > -1)
+                    {
+                        value = Tool.FirstUpper(value);
+                    }
+                }
                 contentList.Add(value);
             }
         }

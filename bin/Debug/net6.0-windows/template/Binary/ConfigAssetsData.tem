@@ -41,7 +41,7 @@ public class ConfigAssetsData : MonoBehaviour
     {
 #if UNITY_EDITOR
         string filePath = $"Assets/ConfigAssets/ConfigAssetBinary/{typeof(V).Name}.bytes";
-        TextAsset asset = AssetDatabase.LoadAssetAtPath<TextAsset>(filePath);
+        TextAsset asset = UnityEditor.AssetDatabase.LoadAssetAtPath<TextAsset>(filePath);
 #else
         TextAsset asset = ab.LoadAsset<TextAsset>(typeof(V).Name);
 #endif

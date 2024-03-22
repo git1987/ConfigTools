@@ -9,19 +9,19 @@ namespace ConfigTools
             Error,
             Warning
         }
-        public static void Log(string message)
+        public static void Log(object message)
         {
             Print(Type.Log, message);
         }
-        public static void LogError(string message)
+        public static void LogError(object message)
         {
             Print(Type.Error, message);
         }
-        public static void LogWarning(string message)
+        public static void LogWarning(object message)
         {
             Print(Type.Warning, message);
         }
-        public static void Print(Type debugType, string message)
+        public static void Print(Type debugType, object message)
         {
             string content = debugType switch
             {
@@ -29,7 +29,7 @@ namespace ConfigTools
                 Type.Warning => "Warning--->",
                 _ => string.Empty
             }; ;
-            MainWindow.instance.AddLog(content + message);
+            MainWindow.instance.AddLog(content + message.ToString());
         }
     }
 }

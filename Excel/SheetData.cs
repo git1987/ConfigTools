@@ -1,4 +1,5 @@
 ﻿using OfficeOpenXml;
+using OfficeOpenXml.DataValidation;
 
 namespace ConfigTools.Excel
 {
@@ -19,14 +20,35 @@ namespace ConfigTools.Excel
         /// 首字母大写sheet名称
         /// </summary>
         public string SheetName { private set; get; }
-        public SheetData(ExcelWorksheet sheet)
+        public SheetData(ExcelWorksheet sheet, string excelName)
         {
             this.sheet = sheet;
+            this.excelName = excelName;
             SheetName = Tool.FirstUpper(sheetName);
-            //行
-            rowCount = sheet.Rows.Count();
+        }
+        /// <summary>
+        /// 初始化数据
+        /// </summary>
+        protected void InitDatas()
+        {
             //列数
-            columnCount = sheet.Cells.Count() / rowCount;
+            columnCount = sheet.Columns.Range.Columns;
+            //行
+            for (int h = rowStartIndex; ; h++)
+            {
+                bool hasData = false;
+                for (int i = 0; i < columnCount; i++)
+                {
+                    string content = sheet.Cells[h + 1, i + 1].Text;
+                    if (content is { Length: > 0 })
+                    {
+                        hasData = true;
+                        break;
+                    }
+                }
+                if (!hasData) break;
+                else rowCount = h + 1;
+            }
         }
         /// <summary>
         /// 保存数据

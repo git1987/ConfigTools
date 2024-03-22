@@ -118,7 +118,11 @@ namespace ConfigTools
                 EnumValue ev = enumValues[key];
                 if (ev.summary != null && ev.summary != string.Empty)
                 {
-                    sb.Append(string.Format("\t/*{0}*/\n", ev.summary));
+                    string content = @$"    /// <summary>
+	/// {ev.summary}
+	/// </summary>
+";
+                    sb.Append(content);
                 }
                 if (ev.enumValue != null)
                 {

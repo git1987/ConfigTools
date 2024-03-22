@@ -22,19 +22,18 @@ namespace ConfigTools.Excel
                 //枚举
                 if (sheet.Name == "enum")
                 {
-                    EnumSheet(sheet);
+                    EnumSheet(sheet, package.File.Name);
                 }
                 else
                 {
-                    ReadExcelSheet excelSheet = new ReadExcelSheet(sheet);
-                    excelSheet.SetExcelName(package.File.Name);
+                    ReadExcelSheet excelSheet = new ReadExcelSheet(sheet,package.File.Name);
                     sheetDataList.Add(excelSheet);
                 }
             }
         }
-        void EnumSheet(ExcelWorksheet enumSheet)
+        void EnumSheet(ExcelWorksheet enumSheet,string excelName)
         {
-            ReadExcelSheet_Enum readExcel = new ReadExcelSheet_Enum(enumSheet);
+            ReadExcelSheet_Enum readExcel = new ReadExcelSheet_Enum(enumSheet, excelName);
             string enumName = string.Empty;
             for (int i = 0; i < readExcel.datas.Length; i++)
             {

@@ -18,9 +18,10 @@ namespace ConfigTools.Excel
         public List<string> languageList;
         //是否导出标记：0|""全部导出
         public List<string> buildSignList;
-        public ReadExcelSheet(ExcelWorksheet _sheet) : base(_sheet)
+        public ReadExcelSheet(ExcelWorksheet _sheet, string _excelName) : base(_sheet, _excelName)
         {
             rowStartIndex = 5;
+            InitDatas();
             //name行
             variableNameList = new();
             for (int i = 1; i <= columnCount; i++)
@@ -61,10 +62,6 @@ namespace ConfigTools.Excel
             //数据
             SetDatas();
             Debug.Log("保存数据完毕");
-        }
-        public void SetExcelName(string excelName)
-        {
-            this.excelName = excelName;
         }
 
         void SetValue(out List<string> contentList, int rowIndex, int columnCount)

@@ -93,7 +93,8 @@ namespace ConfigTools
                     //第1列固定使用ID变量名，使用ID变量名
                     for (int k = 0; k < sheet.variableNameList.Count; k++)
                     {
-                        if (sheet.buildSignList[k] != "0" ||
+                        if (sheet.buildSignList[k] != string.Empty &&
+                            sheet.buildSignList[k] != "0" &&
                             sheet.buildSignList[k] != Config.outputType) continue;
                         StringBuilder changeContent = new StringBuilder(newContent.ToString());
                         string variableName;

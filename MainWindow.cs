@@ -26,14 +26,14 @@ namespace ConfigTools
             BuildSign.Text = Config.outputType;
             //test
             Timers timer = new Timers() { Interval = 1 };
-            int temp = 0;
-            progress.Init(10);
-            timer.Tick += (obj, e) =>
-            {
-                temp++;
-                progress.Update(temp);
-            };
-            timer.Start();
+            //int temp = 0;
+            //progress.Init(10);
+            //timer.Tick += (obj, e) =>
+            //{
+            //    temp++;
+            //    progress.Update(temp);
+            //};
+            //timer.Start();
         }
         //excel path
         private void ExcelPath_TextChanged(object sender, EventArgs e)
@@ -90,6 +90,7 @@ namespace ConfigTools
             ObjectType type = new Binary();
             type.ReadExcels(ExcelPath.Text);
             Config.Modify();
+            EventManager.Broadcast(BuildProgress.ProgressFinish);
         }
 
         private void ClearLog_Click(object sender, EventArgs e)

@@ -1,4 +1,5 @@
 ﻿using ConfigTools.Excel;
+using ConfigTools.UI;
 
 namespace ConfigTools.DataType
 {
@@ -20,12 +21,16 @@ namespace ConfigTools.DataType
             Dictionary<string, string> languageDatas = null;
             if (Config.isLanguage)
                 languageDatas = new Dictionary<string, string>();
+
+            EventManager<int>.Broadcast(typeof(BuildProgress).Name, dir.GetFiles().Length + 1);
+            int fileCount = 1;
             foreach (FileInfo file in dir.GetFiles("*.xlsx"))
             {
                 //排除excel缓存文件
                 if (file.Name.IndexOf("$") == -1)
                 {
                     ReadExcel read = new ReadExcel(file.FullName);
+                    EventManager<int>.Broadcast(BuildProgress.ProgressUpdate, fileCount++);
                     for (int i = 0; i < read.sheetDataList.Count; i++)
                     {
                         BuildCSharpFile(read.sheetDataList[i]);
@@ -56,6 +61,6 @@ namespace ConfigTools.DataType
         /// <param name="variableType">变量类型</param>
         /// <param name="variableType">变量名称</param>
         /// <returns></returns>
-        public abstract string GetAssignmentValue(string variableType,string variableName);
+        public abstract string GetAssignmentValue(string variableType, string variableName);
     }
 }

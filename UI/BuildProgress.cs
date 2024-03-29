@@ -3,17 +3,22 @@ namespace ConfigTools.UI
 {
     internal class BuildProgress
     {
+        public static string ProgressUpdate = "ProgressUpdate";
+        public static string ProgressFinish = "ProgressFinish";
         ProgressBar bar;
         int task;
         bool begin;
         public BuildProgress(ProgressBar bar)
         {
             this.bar = bar;
+            EventManager<int>.AddListener(typeof(BuildProgress).Name, Init);
         }
         public void Init(int taskCount)
         {
             task = taskCount;
             begin = true;
+            EventManager<int>.AddListener(ProgressUpdate, Update);
+            EventManager.AddListener(ProgressFinish, Finish);
         }
         public void Update(int currentTask)
         {
@@ -34,7 +39,8 @@ namespace ConfigTools.UI
         {
             bar.Value = 100;
             begin = false;
-            Debug.Log("进度条完成");
+            Debug.Log("导出配置完成");
+            EventManager<int>.RemoveListener(ProgressUpdate, Update);
         }
     }
 }

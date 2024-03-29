@@ -1,4 +1,5 @@
 ﻿using ConfigTools.DataType;
+using ConfigTools.UI;
 using OfficeOpenXml;
 
 namespace ConfigTools.Excel
@@ -26,12 +27,12 @@ namespace ConfigTools.Excel
                 }
                 else
                 {
-                    ReadExcelSheet excelSheet = new ReadExcelSheet(sheet,package.File.Name);
+                    ReadExcelSheet excelSheet = new ReadExcelSheet(sheet, package.File.Name);
                     sheetDataList.Add(excelSheet);
                 }
             }
         }
-        void EnumSheet(ExcelWorksheet enumSheet,string excelName)
+        void EnumSheet(ExcelWorksheet enumSheet, string excelName)
         {
             ReadExcelSheet_Enum readExcel = new ReadExcelSheet_Enum(enumSheet, excelName);
             string enumName = string.Empty;

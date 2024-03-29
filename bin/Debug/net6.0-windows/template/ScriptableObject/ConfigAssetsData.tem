@@ -7,6 +7,14 @@ public class ConfigAssetsData : MonoBehaviour
     static private ConfigAssetsData configAssetsDate;
     static public ConfigAssetsData instance
     { get { return configAssetsDate; } }
+    static public ConfigAssetsData Instance()
+    {
+        if (configAssetsDate == null)
+        {
+            configAssetsDate = new GameObject("ConfigAssetsData").AddComponent<ConfigAssetsData>();
+        }
+        return configAssetsDate;
+    }
     static public Enum_LanguageType languageType = 0;
     AssetBundle ab = null;
     private void Awake()

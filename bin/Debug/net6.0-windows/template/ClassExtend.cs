@@ -74,7 +74,7 @@ public static class ClassExtend
     {
         return jsonData.ToString().ToList<T>();
     }
-    public static Enum ToEnum<E>(this string enumString) where E : Enum
+    public static E ToEnum<E>(this string enumString) where E : Enum
     {
         if (Enum.TryParse(typeof(E), enumString, out object e))
         {

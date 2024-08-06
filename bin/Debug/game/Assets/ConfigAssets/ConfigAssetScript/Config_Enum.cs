@@ -3,11 +3,17 @@
 /// </summary>
 public enum Enum_Test {
 	None = -1,
-	/*test1*/
+    /// <summary>
+	/// test1
+	/// </summary>
 	Test1 = 0,
-	/*test2*/
+    /// <summary>
+	/// test2
+	/// </summary>
 	Test2 = 2,
-	/*test3*/
+    /// <summary>
+	/// test3
+	/// </summary>
 	Test3 = 15,
 }
 /// <summary>
@@ -15,12 +21,20 @@ public enum Enum_Test {
 /// </summary>
 public enum Enum_LanguageType {
 	Base = -1,
-	/*中文*/
+    /// <summary>
+	/// 中文
+	/// </summary>
 	zh,
-	/*英文*/
+    /// <summary>
+	/// 英文
+	/// </summary>
 	en,
-	/*日文*/
+    /// <summary>
+	/// 日文
+	/// </summary>
 	jp,
-	/*德语*/
+    /// <summary>
+	/// 德语
+	/// </summary>
 	de,
 }

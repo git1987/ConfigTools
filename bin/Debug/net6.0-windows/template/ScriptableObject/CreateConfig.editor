@@ -29,8 +29,8 @@ public class CreateConfig
     }
     private static void CreateConfigAssets()
     {
-        if (!Directory.Exists(Application.dataPath + "/Res/ConfigAsset/"))
-            Directory.CreateDirectory(Application.dataPath + "/Res/ConfigAsset/");
+        if (!Directory.Exists(Application.dataPath + "/Res/ConfigAssets/"))
+            Directory.CreateDirectory(Application.dataPath + "/Res/ConfigAssets/");
 #if !List
         CreateConfigAsset<#{ClassName}ConfigAsset>();
 #endif
@@ -44,10 +44,10 @@ public class CreateConfig
         string configName = asset.GetConfigName();
         if (!Directory.Exists(assetPath))
             Directory.CreateDirectory(assetPath);
-        string assetPathAndName = "Assets/Res/ConfigAsset/" + configName + ".asset";
+        string assetPathAndName = "Assets/Res/ConfigAssets/" + configName + ".asset";
         if (File.Exists(assetPathAndName))
             File.Delete(assetPathAndName);
-        string filePath = Application.dataPath + "/ConfigAsset/" + configName + ".json";
+        string filePath = Application.dataPath + "/ConfigAssets/ConfigAssetJson/" + configName + ".json";
         StreamReader sr = new StreamReader(filePath);
         JsonData jsonData = JsonMapper.ToObject(sr.ReadToEnd());
         sr.Close();
@@ -57,7 +57,7 @@ public class CreateConfig
             Debug.LogError("CreateConfigAsset " + configName + " [\"config\"] is null");
             return;
         }
-        asset.ReadFromData(jsonData);
+        asset.ReadFromJson(jsonData);
         CreateAssetBundle(asset, assetPathAndName);
     }
     [MenuItem("CreateAsset/AssetBundle")]
@@ -85,7 +85,7 @@ public class CreateConfig
         if (!IsFolderExists(targetPath)) Directory.CreateDirectory(targetPath);
         //打包资源 
         AssetBundleManifest manifest;
-        DirectoryInfo configAssetFolder = new DirectoryInfo(Application.dataPath + "/Res/ConfigAsset");
+        DirectoryInfo configAssetFolder = new DirectoryInfo(Application.dataPath + "/Res/ConfigAssets");
         FileInfo[] files = configAssetFolder.GetFiles("*.asset");
         AssetBundleBuild[] abb = new AssetBundleBuild[1];
         abb[0] = new AssetBundleBuild()
@@ -96,7 +96,7 @@ public class CreateConfig
         int index = 0;
         foreach (FileInfo file in files)
         {
-            string unityAssetPath = "Assets/Res/ConfigAsset/" + file.Name;
+            string unityAssetPath = "Assets/Res/ConfigAssets/" + file.Name;
             Object obj = AssetDatabase.LoadAssetAtPath<Object>(unityAssetPath);
             Debug.Log(obj);
             abb[0].assetNames[index] = unityAssetPath;

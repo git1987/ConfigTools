@@ -8,7 +8,7 @@ public class #{ClassName}ConfigAsset : ConfigAssetBase
     [System.Serializable]
     public class #{ClassName}Config : ConfigAssetBase.ConfigAsset
     {
-        public string key;
+        //public string key;
 #if List
         #{typeName} #{variableName};
 #endif
@@ -47,7 +47,7 @@ public class #{ClassName}ConfigAsset : ConfigAssetBase
     public string GetLanguageText(string key)
     {
         if (configsDictionary.TryGetValue(key, out #{ClassName}Config config))
-            return config.GetLanguageText(ConfigAssetData.languageType);
+            return config.GetLanguageText(ConfigAssetsData.languageType);
         else
         {
             return key;
@@ -62,7 +62,7 @@ public class #{ClassName}ConfigAsset : ConfigAssetBase
                 configsDictionary.Add(configs[i].key, configs[i]);
         }
     }
-    public override void ReadFromData(object obj)
+    public override void ReadFromJson(object obj)
     {
         JsonData jsonData = obj as JsonData;
         configs = new List<#{ClassName}Config>();

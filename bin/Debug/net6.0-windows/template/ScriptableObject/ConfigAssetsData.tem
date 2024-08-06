@@ -17,6 +17,7 @@ public class ConfigAssetsData : MonoBehaviour
     }
     static public Enum_LanguageType languageType = 0;
     AssetBundle ab = null;
+    bool initFinish;
     private void Awake()
     {
         if (configAssetsDate == null) configAssetsDate = this;

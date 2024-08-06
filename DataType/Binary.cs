@@ -1,5 +1,6 @@
 ﻿using ConfigTools.DataType;
 using ConfigTools.Excel;
+using Microsoft.VisualBasic.Logging;
 
 namespace ConfigTools.DataType
 {
@@ -43,9 +44,18 @@ namespace ConfigTools.DataType
             {
                 assignmentValue = $"reader.ReadBoolean()";
             }
+            else if (variableType.ToLower() == "vector2")
+            {
+                assignmentValue = $"reader.ReadString().Tovector2()";
+            }
+            else if (variableType.ToLower() == "vector3")
+            {
+                assignmentValue = $"reader.ReadString().Tovector3()";
+            }
             else if (variableType.ToLower().IndexOf("list") >= 0)
             {
-                assignmentValue = $"reader.ReadString().ToList{variableType.Substring(4)}()";
+                string listType = variableType.Substring(4);
+                assignmentValue = $"reader.ReadString().ToList{listType}()";
             }
             else if (variableType.ToLower().IndexOf("enum_") >= 0)
             {

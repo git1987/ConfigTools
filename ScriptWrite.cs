@@ -128,7 +128,7 @@ namespace ConfigTools
                         //变量类型
                         if (changeContent.ToString().IndexOf("#{typeName}") >= 0)
                         {
-                            newContents.AppendLine("\t\t/*" + sheet.summarylist[k] + "*/");
+                            newContents.AppendLine("\t\t/**" + sheet.summarylist[k] + "*/");
                             //类
                             if (className.IndexOf("ConfigAsset") > -1)
                             {
@@ -184,11 +184,12 @@ namespace ConfigTools
                 file.CopyTo($"{outputScriptPath}/{file.Name}", true);
             }
             folder = new DirectoryInfo($"{Config.templatePath}/{objectType.Name}");
-            foreach (FileInfo file in folder.GetFiles("*.cseditor"))
+            foreach (FileInfo file in folder.GetFiles("*.editor"))
             {
                 string fileName = file.Name;
                 fileName = fileName.Substring(0, fileName.Length - "editor".Length);
-                file.CopyTo($"{outputScriptPath}/Editor/{fileName}", true);
+                WriteCSFile("CreateConfig.editor", $"{outputScriptPath}/Editor/{fileName}.cs");
+                //file.CopyTo($"{outputScriptPath}/Editor/{fileName}.cs", true);
             }
         }
         //生成完整的.cs脚本文件

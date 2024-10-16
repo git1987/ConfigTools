@@ -3,50 +3,6 @@ using System.Collections.Generic;
 using LitJson;
 namespace ConfigTools
 {
-    public class vector2
-    {
-        public float x, y;
-        public vector2()
-        {
-            x = y = 0;
-        }
-        public vector2(float x, float y)
-        {
-            this.x = x;
-            this.y = y;
-        }
-        public static implicit operator UnityEngine.Vector2(vector2 vector)
-        {
-            return UnityEngine.Vector2(vector.x, vector.y);
-        }
-        public static implicit operator UnityEngine.Vector3(vector2 vector)
-        {
-            return UnityEngine.Vector2(vector.x, vector.y, 0);
-        }
-    }
-    public class vector3
-    {
-        public float x, y, z;
-        public vector3()
-        {
-            x = y = z = 0;
-        }
-        public vector2(float x, float y, float z)
-        {
-            this.x = x;
-            this.y = y;
-            this.z = z;
-        }
-
-        public static implicit operator UnityEngine.Vector2(vector3 vector)
-        {
-            return UnityEngine.Vector2(vector.x, vector.y);
-        }
-        public static implicit operator UnityEngine.Vector3(vector3 vector)
-        {
-            return UnityEngine.Vector2(vector.x, vector.y, vector.z);
-        }
-    }
     public static class ClassExtend
     {
         public static List<T> ToList<T>(this object arrayList)
@@ -99,14 +55,6 @@ namespace ConfigTools
                             {
                                 strs[i] = "false";
                             }
-                            else if (typeof(T) == typeof(vector2))
-                            {
-                                strs[i] = new();
-                            }
-                            else if (typeof(T) == typeof(vector3))
-                            {
-                                strs[i] = new();
-                            }
                             else
                             {
                                 strs[i] = "0";
@@ -123,43 +71,6 @@ namespace ConfigTools
                 list.Add(t);
             }
             return list;
-        }
-        public static vector2 Tovector2(this string str)
-        {
-            string[] vectorStr = str.Split(',');
-            if (vectorStr.Length < 2)
-            {
-                UnityEngine.Debug.LogError("str length < 2");
-                return new vector2();
-            }
-            else
-            {
-                int.TryParse(vectorStr[0], out int x);
-                int.TryParse(vectorStr[1], out int y);
-                return new vector2(x, y);
-            }
-        }
-        public static vector3 Tovector3(this string str)
-        {
-            string[] vectorStr = str.Split(',');
-            if (vectorStr.Length < 2)
-            {
-                UnityEngine.Debug.LogError("str length < 2");
-                return new vector2();
-            }
-            else if (vectorStr.Length == 2)
-            {
-                int.TryParse(vectorStr[0], out int x);
-                int.TryParse(vectorStr[1], out int y);
-                return new vector3(x, y, 0);
-            }
-            else
-            {
-                int.TryParse(vectorStr[0], out int x);
-                int.TryParse(vectorStr[1], out int y);
-                int.TryParse(vectorStr[2], out int z);
-                return new vector2(x, y, z);
-            }
         }
         public static List<T> ToList<T>(this JsonData jsonData)
         {

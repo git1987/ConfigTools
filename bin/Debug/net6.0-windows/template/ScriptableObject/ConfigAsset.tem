@@ -21,26 +21,38 @@ public class #{ClassName}ConfigAsset : ConfigAssetBase
 #endif
         }
     }
-    public List<#{ClassName}Config> configs;
-    public Dictionary<int, #{ClassName}Config> configsDictionary;
+    public List<#{ClassName}Config> configList;
+    public Dictionary<int, #{ClassName}Config> configs;
     public override string GetConfigName()
     {
         return "#{ClassName}Config";
     }
+    public #{ClassName}Config GetConfigByID(int configID)
+    {
+        if (configs.TryGetValue(configID, out #{ClassName}Config config))
+        {
+            return config;
+        }
+        else
+        {
+            Debug.LogError($"{configID}:config is null!");
+            return null;
+        } 
+    }
     public override void ReadList()
     {
-        configsDictionary = new Dictionary<int, #{ClassName}Config>();
-        for (int i = 0; i < configs.Count; i++)
+        configs = new Dictionary<int, #{ClassName}Config>();
+        for (int i = 0; i < configList.Count; i++)
         {
-            if (!configsDictionary.ContainsKey(configs[i].ID))
-                configsDictionary.Add(configs[i].ID, configs[i]);
+            if (!configs.ContainsKey(configList[i].ID))
+                configs.Add(configList[i].ID, configList[i]);
         }
     }
 
     public override void ReadFromJson(object obj)
     {
         JsonData jsonData = obj as JsonData;
-        configs = new List<#{ClassName}Config>();
+        configList = new List<#{ClassName}Config>();
         if (jsonData["name"].ToString() == GetConfigName())
         {
             if (((IDictionary)jsonData).Contains("config"))
@@ -51,7 +63,7 @@ public class #{ClassName}ConfigAsset : ConfigAssetBase
                     #{ClassName}Config configItem = new #{ClassName}Config();
                     configItem.ID = int.Parse(config[i]["ID"].ToString());
                     configItem.InitJson(config[i]);
-                    configs.Add(configItem);
+                    configList.Add(configItem);
                 }
             }
         }
